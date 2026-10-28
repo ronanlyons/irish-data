@@ -1,0 +1,10 @@
+# ALLOWLIST: only the published site goes to GitHub. Everything else stays local.
+/*
+!/.gitignore
+!/README.md
+!/index.html
+!/.nojekyll
+!/CNAME
+!/charts/
+!/data/
+/_preview/

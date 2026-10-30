@@ -5,6 +5,7 @@
 !/index.html
 !/.nojekyll
 !/CNAME
+!/CITATION.cff
 !/charts/
 !/data/
 /_preview/

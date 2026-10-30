@@ -1,0 +1,184 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railway route miles, 1834-2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<style>
+/* Layout (railways): a mock-up of one ceph.ie data-set entry: title block, one interactive chart with a
+   measure switch, then sources, join note, downloads and the pre-publication checklist. */
+:root{
+  --bg:#F3F5F4; --surface:#FFFFFF; --fg:#18211E; --muted:#5A6661; --rule:#D5DCD8; --grid:#E6EAE8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#8b5cc4; --gap:#B23F35; --seam:#18211E;
+  --ok:#DCEFE4; --ok-fg:#1D5E40; --mid:#F6EAD2; --mid-fg:#7A4F0E; --bad:#F6DEDA; --bad-fg:#8E2E26;
+  --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+  --label:"IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+
+
+body{background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:18px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding-inline:20px;padding-block:36px 72px}
+.prose{max-width:66ch}
+h1,h2,h3{font-weight:500;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.4rem} h2{font-size:1.45rem;margin-top:2.6rem;margin-bottom:.5rem} h3{font-size:1.1rem}
+p{margin:.6rem 0}
+.eyebrow{font-family:var(--label);font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.banner{font-family:var(--label);font-size:.88rem;background:var(--mid);color:var(--mid-fg);padding:8px 12px;border-radius:4px;margin-bottom:18px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--label);font-size:.92rem;color:var(--muted);margin-top:.6rem}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 18px 12px;margin-top:22px}
+.controls{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.seg button{font-family:var(--label);font-size:.92rem;background:transparent;color:var(--fg);border:0;padding:6px 14px;cursor:pointer}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--s1);outline-offset:-2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--label);font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.key{width:18px;height:0;border-top:2.5px solid}
+.plot{position:relative;margin-top:10px;overflow-x:auto}
+.plot svg{display:block;width:100%;min-width:560px;height:auto}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:6px 10px;font-family:var(--label);font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.08);min-width:150px}
+.tip .yr{color:var(--muted);margin-bottom:2px}
+.tip .row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.tip .row b{font-variant-numeric:tabular-nums;font-weight:600}
+.tip .row span{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+.tip .note{color:var(--muted);font-size:.78rem;margin-top:3px;max-width:240px}
+.caption{font-family:var(--label);font-size:.85rem;color:var(--muted);margin-top:6px}
+details{margin-top:10px;font-family:var(--label);font-size:.9rem}
+summary{cursor:pointer;color:var(--muted)}
+.tbl{overflow-x:auto;max-height:340px;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:4px 10px 4px 0;border-bottom:1px solid var(--rule);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 28px;font-size:.98rem}
+.facts > div{min-width:0}
+.facts dt{font-family:var(--label);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.facts dd{margin:0}
+.facts ul{margin:0;padding-left:1.1em}
+.check{list-style:none;padding:0;margin:0}
+.check li{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule);font-size:.97rem}
+.chip{font-family:var(--label);font-size:.76rem;font-weight:500;padding:1px 8px;border-radius:99px;white-space:nowrap;height:fit-content;margin-top:3px}
+.c-ok{background:var(--ok);color:var(--ok-fg)} .c-mid{background:var(--mid);color:var(--mid-fg)} .c-bad{background:var(--bad);color:var(--bad-fg)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.85em}
+@media (max-width:520px){ body{font-size:17px} h1{font-size:1.9rem} .card{padding:14px 12px 10px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+
+/* embed (WordPress iframe): white ground, no page padding beyond the cards */
+:root{--bg:#FFFFFF}
+body{background:#FFFFFF}
+.wrap{padding-block:4px 8px;max-width:none}
+</style></head><body>
+<div class="wrap">
+<section class="card" aria-label="Chart">
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Measure">
+        <button type="button" data-m="Route miles" aria-pressed="true">Route miles</button>
+        <button type="button" data-m="Share of the island's route miles" aria-pressed="false">Share of the island</button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="plot" id="plot"><div class="tip" id="tip" hidden></div></div>
+    <div class="caption" id="caption"></div>
+    <details><summary>Show the figures as a table</summary><div class="tbl"><table id="table"></table></div></details>
+  </section>
+<p id="cephCite" hidden style="font-size:13px;color:#5B6670;margin:12px 0 0">How to cite: Lyons, R. C. (2026), &quot;Railway route miles, 1834-2024&quot;, CEPH Historical Irish Data series, version of 30 October 2026, https://ronanlyons.github.io/irish-data/charts/railway-route-miles.html</p>
+</div>
+<script>
+const DATA = {"Route miles": {"Companies wholly in the 26 counties": [[1834, 6.0], [1835, 6.0], [1836, 6.0], [1837, 6.0], [1838, 6.0], [1839, 6.0], [1840, 6.0], [1841, 6.0], [1842, 6.0], [1843, 6.0], [1844, 39.8], [1845, 39.8], [1846, 95.5], [1847, 170.0], [1848, 269.9], [1849, 337.6], [1850, 378.1], [1851, 464.6], [1852, 489.6], [1853, 587.2], [1854, 610.1], [1855, 636.5], [1856, 670.5], [1857, 689.4], [1858, 729.1], [1859, 824.0], [1860, 891.0], [1861, 964.0], [1862, 1125.0], [1863, 1183.0], [1864, 1224.0], [1865, 1239.0], [1866, 1274.0], [1867, 1283.0], [1868, 1294.0], [1869, 1307.5], [1870, 1307.0], [1871, 1315.0], [1872, 1435.0], [1873, 1445.0], [1874, 1454.0], [1875, 1384.0], [1876, 1383.0], [1877, 1409.0], [1878, 1452.0], [1879, 1453.0], [1880, 1470.0], [1881, 1524.0], [1882, 1524.0], [1883, 1525.0], [1884, 1543.0], [1885, 1597.0], [1886, 1648.0], [1887, 1652.1], [1888, 1711.1], [1889, 1764.1], [1890, 1765.1], [1891, 1836.1], [1892, 1859.1], [1893, 1936.1], [1894, 1989.1], [1895, 2093.1], [1896, 2092.1], [1897, 2082.1], [1898, 2090.1], [1899, 2090.1], [1900, 2083.1], [1901, 2085.1], [1902, 2090.1], [1903, 2097.1], [1904, 2123.1], [1905, 2123.1], [1906, 2162.1], [1907, 2161.1], [1908, 2162.1], [1909, 2162.1], [1910, 2162.1], [1911, 2162.1], [1912, 2163.1], [1913, 2164.1], [1919, 2182.9], [1920, 2189.8], [1922, 2191.2], [1923, 2191.2], [1924, 2191.1], [1925, 2187.3], [1926, 2187.3], [1927, 2187.3], [1928, 2187.3], [1929, 2188.3], [1931, 2186.4], [1932, 2184.9], [1933, 2168.9], [1934, 2158.2], [1935, 2075.9], [1936, 2076.3], [1937, 2049.7], [1938, 2049.8], [1939, 2049.4], [1940, 2043.1], [1941, 2042.7], [1942, 2042.7], [1943, 2043.1], [1944, 2043.1], [1945, 2031.4], [1946, 2031.2], [1947, 2027.6], [1948, 2027.7], [1950, 2027.3], [1951, 2027.3], [1952, 2008.0], [1953, 2007.8], [1954, 1923.0], [1955, 1918.2], [1956, 1918.2], [1958, 1911.0], [1959, 2107.0], [1960, 1809.0], [1961, 1747.0], [1962, 1655.0], [1963, 1462.0], [1964, 1458.0], [1965, 1458.0], [1966, 1455.0], [1967, 1334.0], [1968, 1334.0], [1969, 1333.0], [1970, 1333.0], [1971, 1361.0], [1972, 1360.0], [1973, 1361.0], [1974, 1360.0], [1975, 1247.0], [1976, 1248.0], [1977, 1246.0], [1978, 1247.0], [1979, 1236.0], [1980, 1235.9], [1981, 1235.9], [1982, 1234.7], [1983, 1207.9], [1984, 1207.9], [1985, 1207.9], [1986, 1207.9], [1987, 1207.9], [1988, 1207.9], [1989, 1207.9], [1990, 1207.9], [1991, 1207.9], [1992, 1207.9], [1993, 1207.9], [1994, 1207.9], [1995, 1208.6], [1996, 1208.6], [1997, 1208.6], [1998, 1186.2], [1999, 1192.4], [2000, 1192.4], [2001, 1192.4], [2002, 1139.6], [2003, 1139.6], [2004, 1139.6], [2005, 1139.6], [2006, 1139.6], [2007, 1139.6], [2008, 1029.6], [2009, 1035.8], [2010, 1045.8], [2011, 1045.8], [2012, 1045.8], [2016, 1045.8], [2017, 1045.8], [2023, 1043.9]], "Companies wholly in the 6 counties": [[1847, 14.1], [1848, 56.2], [1849, 62.2], [1850, 75.2], [1851, 75.2], [1852, 113.4], [1853, 136.4], [1854, 150.9], [1855, 160.5], [1856, 202.0], [1857, 222.6], [1858, 222.6], [1859, 266.0], [1860, 199.0], [1861, 236.0], [1862, 251.0], [1863, 266.0], [1864, 283.0], [1865, 283.0], [1866, 291.0], [1867, 291.0], [1868, 292.0], [1869, 237.0], [1870, 237.0], [1871, 246.0], [1872, 246.0], [1873, 246.0], [1874, 246.0], [1875, 246.0], [1876, 246.0], [1877, 247.0], [1878, 247.0], [1879, 275.0], [1880, 321.0], [1881, 321.0], [1882, 320.0], [1883, 337.0], [1884, 342.0], [1885, 341.0], [1886, 335.0], [1887, 372.9], [1888, 372.9], [1889, 373.9], [1890, 373.9], [1891, 373.9], [1892, 381.9], [1893, 381.9], [1894, 381.9], [1895, 381.9], [1896, 381.9], [1897, 381.9], [1898, 381.9], [1899, 381.9], [1900, 381.9], [1901, 381.9], [1902, 381.9], [1903, 381.9], [1904, 381.9], [1905, 381.9], [1906, 399.9], [1907, 399.9], [1908, 399.9], [1909, 399.9], [1910, 399.9], [1911, 399.9], [1912, 399.9], [1913, 401.9], [1919, 409.5], [1920, 409.5], [1924, 402], [1927, 399], [1931, 399], [1934, 400], [1936, 400], [1952, 199], [1955, 167], [1961, 297.0], [1963, 297.0], [1965, 205.0], [1968, 203.0], [1976, 203.0], [1979, 210.0], [1984, 206.0], [1994, 206.0], [1996, 209.0], [1997, 211.0], [1998, 211.0], [1999, 211.0], [2000, 211.0], [2001, 211.0], [2002, 211.0], [2003, 211.0], [2004, 211.0], [2005, 211.0], [2006, 211.0], [2007, 211.0], [2008, 211.0], [2009, 211.0], [2010, 211.0], [2011, 211.0], [2012, 211.0], [2013, 211.0], [2014, 211.0], [2015, 211.0], [2016, 211.0], [2017, 211.0], [2018, 211.0], [2019, 211.0], [2020, 211.0], [2021, 211.0], [2022, 206.5], [2024, 206.5]], "Cross-border companies (whole systems)": [[1839, 7.5], [1840, 7.5], [1841, 7.5], [1842, 25.2], [1843, 25.2], [1844, 25.2], [1845, 25.2], [1846, 25.2], [1847, 25.2], [1848, 35.8], [1849, 75.8], [1850, 86.2], [1851, 86.2], [1852, 109.0], [1853, 109.0], [1854, 114.5], [1855, 122.9], [1856, 127.5], [1857, 128.1], [1858, 147.3], [1859, 172.0], [1860, 245.0], [1861, 245.0], [1862, 245.0], [1863, 272.0], [1864, 287.0], [1865, 287.0], [1866, 323.0], [1867, 323.0], [1868, 323.0], [1869, 395.0], [1870, 395.0], [1871, 410.0], [1872, 410.0], [1873, 410.0], [1874, 410.0], [1875, 485.0], [1876, 483.0], [1877, 484.0], [1878, 484.0], [1879, 557.0], [1880, 579.0], [1881, 596.0], [1882, 611.0], [1883, 630.0], [1884, 630.0], [1885, 637.0], [1886, 649.0], [1887, 649.0], [1888, 649.0], [1889, 653.0], [1890, 653.0], [1891, 653.0], [1892, 654.0], [1893, 673.0], [1894, 673.0], [1895, 698.0], [1896, 704.0], [1897, 704.0], [1898, 704.0], [1899, 704.0], [1900, 718.0], [1901, 741.0], [1902, 742.0], [1903, 791.0], [1904, 791.0], [1905, 807.0], [1906, 801.0], [1907, 801.0], [1908, 801.0], [1909, 829.0], [1910, 839.0], [1911, 840.0], [1912, 840.0], [1913, 841.0], [1919, 841.3], [1920, 841.3], [1922, 841.3], [1923, 841.3], [1924, 841.3], [1925, 841.3], [1926, 841.4], [1927, 841.4], [1928, 841.4], [1929, 841.4], [1931, 841.3], [1932, 841.2], [1933, 841.2], [1934, 841.2], [1935, 831.1], [1936, 804.3], [1937, 804.2], [1938, 804.1], [1939, 804.1], [1940, 804.1], [1941, 792.1], [1942, 792.1], [1943, 792.1], [1944, 792.1], [1945, 792.1], [1946, 792.1], [1947, 754.3], [1948, 754.3], [1950, 754.3], [1951, 754.3], [1952, 702.9], [1953, 672.0], [1954, 671.7], [1955, 671.9], [1956, 671.9], [1958, 455.0]], "Whole island": [[1834, 6.0], [1835, 6.0], [1836, 6.0], [1837, 6.0], [1838, 6.0], [1839, 13.5], [1840, 13.5], [1841, 13.5], [1842, 31.5], [1843, 31.5], [1844, 65.0], [1845, 65.0], [1846, 120.8], [1847, 209.5], [1848, 428.0], [1849, 515.0], [1850, 580.0], [1851, 666.0], [1852, 771.0], [1853, 865.0], [1854, 875.5], [1855, 942.0], [1856, 1023.0], [1857, 1064.0], [1858, 1129.0], [1859, 1265.0], [1860, 1364.0], [1861, 1445.0], [1862, 1621.0], [1863, 1741.0], [1864, 1794.0], [1865, 1838.0], [1866, 1909.0], [1867, 1928.0], [1868, 1930.0], [1869, 1975.0], [1870, 1975.0], [1871, 1988.0], [1872, 2091.0], [1873, 2101.0], [1874, 2127.0], [1875, 2148.0], [1876, 2157.0], [1877, 2203.0], [1878, 2259.0], [1879, 2285.0], [1880, 2370.0], [1881, 2441.0], [1882, 2465.0], [1883, 2502.0], [1884, 2525.0], [1885, 2575.0], [1886, 2632.0], [1887, 2674.0], [1888, 2733.0], [1889, 2791.0], [1890, 2792.0], [1891, 2863.0], [1892, 2895.0], [1893, 2991.0], [1894, 3044.0], [1895, 3173.0], [1896, 3178.0], [1897, 3168.0], [1898, 3176.0], [1899, 3176.0], [1900, 3183.0], [1901, 3208.0], [1902, 3214.0], [1903, 3270.0], [1904, 3296.0], [1905, 3312.0], [1906, 3363.0], [1907, 3362.0], [1908, 3363.0], [1909, 3391.0], [1910, 3401.0], [1911, 3402.0], [1912, 3403.0], [1913, 3409.0], [1919, 3435.0], [1920, 3441.9], [1924, 3434.4], [1927, 3427.7], [1931, 3426.7], [1934, 3399.4], [1936, 3280.6], [1952, 2909.9], [1955, 2757.1], [1961, 2044.0], [1963, 1759.0], [1965, 1663.0], [1968, 1537.0], [1976, 1451.0], [1979, 1446.0], [1984, 1413.9], [1994, 1413.9], [1996, 1417.6], [1997, 1419.6], [1998, 1397.2], [1999, 1403.4], [2000, 1403.4], [2001, 1403.4], [2002, 1350.6], [2003, 1350.6], [2004, 1350.6], [2005, 1350.6], [2006, 1350.6], [2007, 1350.6], [2008, 1240.6], [2009, 1246.8], [2010, 1256.8], [2011, 1256.8], [2012, 1256.8], [2016, 1256.8], [2017, 1256.8]]}, "Share of the island's route miles": {"Companies wholly in the 26 counties": [[1834, 100.0], [1835, 100.0], [1836, 100.0], [1837, 100.0], [1838, 100.0], [1839, 44.4], [1840, 44.4], [1841, 44.4], [1842, 19.0], [1843, 19.0], [1844, 61.2], [1845, 61.2], [1846, 79.1], [1847, 81.1], [1848, 63.1], [1849, 65.6], [1850, 65.2], [1851, 69.8], [1852, 63.5], [1853, 67.9], [1854, 69.7], [1855, 67.6], [1856, 65.5], [1857, 64.8], [1858, 64.6], [1859, 65.1], [1860, 65.3], [1861, 66.7], [1862, 69.4], [1863, 67.9], [1864, 68.2], [1865, 67.4], [1866, 66.7], [1867, 66.5], [1868, 67.0], [1869, 66.2], [1870, 66.2], [1871, 66.1], [1872, 68.6], [1873, 68.8], [1874, 68.4], [1875, 64.4], [1876, 64.1], [1877, 64.0], [1878, 64.3], [1879, 63.6], [1880, 62.0], [1881, 62.4], [1882, 61.8], [1883, 61.0], [1884, 61.1], [1885, 62.0], [1886, 62.6], [1887, 61.8], [1888, 62.6], [1889, 63.2], [1890, 63.2], [1891, 64.1], [1892, 64.2], [1893, 64.7], [1894, 65.3], [1895, 66.0], [1896, 65.8], [1897, 65.7], [1898, 65.8], [1899, 65.8], [1900, 65.4], [1901, 65.0], [1902, 65.0], [1903, 64.1], [1904, 64.4], [1905, 64.1], [1906, 64.3], [1907, 64.3], [1908, 64.3], [1909, 63.8], [1910, 63.6], [1911, 63.6], [1912, 63.6], [1913, 63.5], [1919, 63.5], [1920, 63.6], [1924, 63.8], [1927, 63.8], [1931, 63.8], [1934, 63.5], [1936, 63.3], [1952, 69.0], [1955, 69.6], [1961, 85.5], [1963, 83.1], [1965, 87.7], [1968, 86.8], [1976, 86.0], [1979, 85.5], [1984, 85.4], [1994, 85.4], [1996, 85.3], [1997, 85.1], [1998, 84.9], [1999, 85.0], [2000, 85.0], [2001, 85.0], [2002, 84.4], [2003, 84.4], [2004, 84.4], [2005, 84.4], [2006, 84.4], [2007, 84.4], [2008, 83.0], [2009, 83.1], [2010, 83.2], [2011, 83.2], [2012, 83.2], [2016, 83.2], [2017, 83.2]], "Companies wholly in the 6 counties": [[1847, 6.7], [1848, 13.1], [1849, 12.1], [1850, 13.0], [1851, 11.3], [1852, 14.7], [1853, 15.8], [1854, 17.2], [1855, 17.0], [1856, 19.7], [1857, 20.9], [1858, 19.7], [1859, 21.0], [1860, 14.6], [1861, 16.3], [1862, 15.5], [1863, 15.3], [1864, 15.8], [1865, 15.4], [1866, 15.2], [1867, 15.1], [1868, 15.1], [1869, 12.0], [1870, 12.0], [1871, 12.4], [1872, 11.8], [1873, 11.7], [1874, 11.6], [1875, 11.5], [1876, 11.4], [1877, 11.2], [1878, 10.9], [1879, 12.0], [1880, 13.5], [1881, 13.2], [1882, 13.0], [1883, 13.5], [1884, 13.5], [1885, 13.2], [1886, 12.7], [1887, 13.9], [1888, 13.6], [1889, 13.4], [1890, 13.4], [1891, 13.1], [1892, 13.2], [1893, 12.8], [1894, 12.5], [1895, 12.0], [1896, 12.0], [1897, 12.1], [1898, 12.0], [1899, 12.0], [1900, 12.0], [1901, 11.9], [1902, 11.9], [1903, 11.7], [1904, 11.6], [1905, 11.5], [1906, 11.9], [1907, 11.9], [1908, 11.9], [1909, 11.8], [1910, 11.8], [1911, 11.8], [1912, 11.8], [1913, 11.8], [1919, 11.9], [1920, 11.9], [1924, 11.7], [1927, 11.6], [1931, 11.6], [1934, 11.8], [1936, 12.2], [1952, 6.8], [1955, 6.1], [1961, 14.5], [1963, 16.9], [1965, 12.3], [1968, 13.2], [1976, 14.0], [1979, 14.5], [1984, 14.6], [1994, 14.6], [1996, 14.7], [1997, 14.9], [1998, 15.1], [1999, 15.0], [2000, 15.0], [2001, 15.0], [2002, 15.6], [2003, 15.6], [2004, 15.6], [2005, 15.6], [2006, 15.6], [2007, 15.6], [2008, 17.0], [2009, 16.9], [2010, 16.8], [2011, 16.8], [2012, 16.8], [2016, 16.8], [2017, 16.8]], "Cross-border companies (whole systems)": [[1839, 55.6], [1840, 55.6], [1841, 55.6], [1842, 80.0], [1843, 80.0], [1844, 38.8], [1845, 38.8], [1846, 20.9], [1847, 12.0], [1848, 8.4], [1849, 14.7], [1850, 14.9], [1851, 12.9], [1852, 14.1], [1853, 12.6], [1854, 13.1], [1855, 13.0], [1856, 12.5], [1857, 12.0], [1858, 13.0], [1859, 13.6], [1860, 18.0], [1861, 17.0], [1862, 15.1], [1863, 15.6], [1864, 16.0], [1865, 15.6], [1866, 16.9], [1867, 16.8], [1868, 16.7], [1869, 20.0], [1870, 20.0], [1871, 20.6], [1872, 19.6], [1873, 19.5], [1874, 19.3], [1875, 22.6], [1876, 22.4], [1877, 22.0], [1878, 21.4], [1879, 24.4], [1880, 24.4], [1881, 24.4], [1882, 24.8], [1883, 25.2], [1884, 25.0], [1885, 24.7], [1886, 24.7], [1887, 24.3], [1888, 23.7], [1889, 23.4], [1890, 23.4], [1891, 22.8], [1892, 22.6], [1893, 22.5], [1894, 22.1], [1895, 22.0], [1896, 22.2], [1897, 22.2], [1898, 22.2], [1899, 22.2], [1900, 22.6], [1901, 23.1], [1902, 23.1], [1903, 24.2], [1904, 24.0], [1905, 24.4], [1906, 23.8], [1907, 23.8], [1908, 23.8], [1909, 24.4], [1910, 24.7], [1911, 24.7], [1912, 24.7], [1913, 24.7], [1919, 24.5], [1920, 24.4], [1924, 24.5], [1927, 24.5], [1931, 24.6], [1934, 24.7], [1936, 24.5], [1952, 24.2], [1955, 24.4]]}};
+const S = [
+  {label:"Whole island", color:"var(--s1)", geos:["Whole island"]},
+  {label:"26-county companies", color:"var(--s2)", geos:["Companies wholly in the 26 counties"]},
+  {label:"6-county companies", color:"var(--s3)", geos:["Companies wholly in the 6 counties"]},
+  {label:"Cross-border companies", color:"var(--s4)", geos:["Cross-border companies (whole systems)"]},
+];
+const CAP = {
+  "Route miles":"Route miles open at the end of each year. Cross-border companies are whole systems. The island total after 1922 is shown only where all its parts are given. The line breaks at the Republic's changes of basis, in 1975 and 2008.",
+  "Share of the island's route miles":"Each group's share of the island's route miles, in years where the island total is known."
+};
+const GAPS=[[1913.5,1918.5],[1920.5,1921.5]];
+const W=880,H=380,M={l:64,r:110,t:18,b:34},X0=1830,X1=2028;
+const BRK=new Set([1975,2008]);   // changes of basis in the Republic's figures: the line is not joined across them
+const NS="http://www.w3.org/2000/svg", F="IBM Plex Sans Condensed, Arial Narrow, sans-serif";
+const plot=document.getElementById("plot"), tip=document.getElementById("tip");
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+const fmt=v=>v==null?"..":Math.round(v).toLocaleString("en-IE");
+let fmtV=fmt;
+function series(m){
+  return S.map(s=>{const pts=[];for(const g of s.geos)for(const p of (DATA[m]?.[g]||[]))pts.push(p);
+    pts.sort((a,b)=>a[0]-b[0]);return {...s,pts};}).filter(s=>s.pts.length);
+}
+function niceMax(v){const p=Math.pow(10,Math.floor(Math.log10(v)));for(const k of [1,1.2,1.5,2,2.5,3,4,5,6,8,10])if(k*p>=v)return k*p;}
+let svg;
+function draw(m){
+  if(svg) svg.remove();
+  fmtV=m.startsWith("Share")?(v=>v==null?"..":v.toFixed(1)+"%"):fmt;
+  const ser=series(m), all=ser.flatMap(s=>s.pts.map(p=>p[1])), ymax=niceMax(Math.max(...all)*1.05);
+  const x=y=>M.l+(y-X0)/(X1-X0)*(W-M.l-M.r), y=v=>H-M.b-(v/ymax)*(H-M.t-M.b);
+  svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":`${m}, 1834 to 2024`});
+  plot.insertBefore(svg,tip);
+  for(const [a,b] of GAPS){el("rect",{x:x(a),y:M.t,width:x(b)-x(a),height:H-M.t-M.b,fill:"var(--gap)","fill-opacity":".07"},svg);}
+  el("text",{x:x(1916),y:M.t+12,"text-anchor":"middle","font-family":F,"font-size":11,fill:"var(--muted)"},svg).textContent="gap";
+  for(let i=0;i<=5;i++){const v=ymax*i/5,yy=y(v);
+    el("line",{x1:M.l,x2:W-M.r,y1:yy,y2:yy,stroke:i?"var(--grid)":"var(--rule)","stroke-width":1},svg);
+    el("text",{x:M.l-8,y:yy+4,"text-anchor":"end","font-family":F,"font-size":12,fill:"var(--muted)"},svg).textContent=m.startsWith("Share")?Math.round(v)+"%":fmt(v);}
+  for(let yr=1840;yr<=2020;yr+=20)el("text",{x:x(yr),y:H-M.b+18,"text-anchor":"middle","font-family":F,"font-size":12,fill:"var(--muted)"},svg).textContent=yr;
+  el("line",{x1:x(1922),x2:x(1922),y1:M.t,y2:H-M.b,stroke:"var(--seam)","stroke-width":1.2,"stroke-dasharray":"2 3"},svg);
+  el("text",{x:x(1922)+4,y:H-M.b-6,"font-family":F,"font-size":11.5,"font-weight":600,fill:"var(--fg)"},svg).textContent="1922";
+  for(const b of BRK){el("line",{x1:x(b-0.5),x2:x(b-0.5),y1:M.t+16,y2:H-M.b,stroke:"var(--muted)","stroke-width":1,"stroke-dasharray":"1 3"},svg);
+    el("text",{x:x(b-0.5),y:M.t+12,"text-anchor":"middle","font-family":F,"font-size":11,fill:"var(--muted)"},svg).textContent="new basis";}
+  for(const s of ser){
+    let d="",prev=null;
+    for(const [yr,v] of s.pts){d+=(prev!=null&&yr-prev<=3&&!BRK.has(yr)?"L":"M")+x(yr).toFixed(1)+","+y(v).toFixed(1);prev=yr;}
+    el("path",{d,fill:"none",stroke:s.color,"stroke-width":2,"stroke-linejoin":"round","stroke-linecap":"round"},svg);
+    s.pts.forEach(([yr,v],i)=>{const pv=s.pts[i-1],nx=s.pts[i+1];
+      if((!pv||yr-pv[0]>3||BRK.has(yr))&&(!nx||nx[0]-yr>3||BRK.has(nx[0]))) el("circle",{cx:x(yr),cy:y(v),r:3.5,fill:s.color},svg);});
+    const last=s.pts[s.pts.length-1];
+    el("circle",{cx:x(last[0]),cy:y(last[1]),r:3.5,fill:s.color,stroke:"var(--surface)","stroke-width":2},svg);
+  }
+  const ends=ser.map(s=>({s,yy:y(s.pts[s.pts.length-1][1]),xx:x(s.pts[s.pts.length-1][0])})).sort((a,b)=>a.yy-b.yy);
+  for(let i=1;i<ends.length;i++) if(ends[i].yy-ends[i-1].yy<14) ends[i].yy=ends[i-1].yy+14;
+  for(const e of ends) el("text",{x:Math.min(e.xx+8,W-M.r+6),y:e.yy+4,"font-family":F,"font-size":12,fill:"var(--fg)"},svg).textContent=e.s.label;
+  const hair=el("line",{y1:M.t,y2:H-M.b,stroke:"var(--muted)","stroke-width":1,visibility:"hidden"},svg);
+  const hit=el("rect",{x:M.l,y:M.t,width:W-M.l-M.r,height:H-M.t-M.b,fill:"transparent",tabindex:0,"aria-label":"Move across the chart to read values"},svg);
+  const lookup=ser.map(s=>new Map(s.pts)), notes=yr=>{const n=[];
+    if(yr<1854)n.push("company split from dated openings");
+    if(yr>=1854&&yr<=1913)n.push("Thom's company tables (trial)");
+    if((yr>=1914&&yr<=1918)||yr===1921)n.push("not yet covered");
+    if(yr>=1959)n.push("CIÉ includes the GNR lines in the Republic");
+    if(yr===1955||yr===1956)n.push("the Abstract keeps closed GNR lines");
+    if(yr>=1961&&yr<=1995)n.push("Northern Ireland: yearbook figures");
+    if(yr===1975)n.push("Republic: change of basis (closed lines moved to sidings)");
+    if(yr>=1998&&yr<=2007)n.push("Republic: lines on the books (Eurostat)");
+    if(yr>=2008)n.push("Republic: network in service");
+    return n.join("; ");};
+  function show(yr){
+    yr=Math.max(1834,Math.min(2024,yr));
+    const px=x(yr); hair.setAttribute("x1",px);hair.setAttribute("x2",px);hair.setAttribute("visibility","visible");
+    tip.replaceChildren();
+    const h=document.createElement("div");h.className="yr";h.textContent=yr;tip.appendChild(h);
+    ser.forEach((s,i)=>{const v=lookup[i].get(yr);const r=document.createElement("div");r.className="row";
+      const sp=document.createElement("span");const k=document.createElement("i");k.className="key";k.style.borderColor=s.color;
+      sp.append(k,document.createTextNode(s.label));const b=document.createElement("b");b.textContent=fmtV(v);r.append(sp,b);tip.appendChild(r);});
+    const n=notes(yr); if(n){const d=document.createElement("div");d.className="note";d.textContent=n;tip.appendChild(d);}
+    tip.hidden=false;
+    const box=svg.getBoundingClientRect(), scale=box.width/W, left=px*scale+plot.scrollLeft;
+    tip.style.top="8px"; tip.style.left=(left+190>box.width?left-190:left+12)+"px";
+  }
+  hit.addEventListener("pointermove",e=>{const b=svg.getBoundingClientRect();const vx=(e.clientX-b.left)*W/b.width;show(Math.round(X0+(vx-M.l)/(W-M.l-M.r)*(X1-X0)));});
+  hit.addEventListener("pointerleave",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  let ky=1913; hit.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){ky+=e.key==="ArrowRight"?1:-1;show(ky);e.preventDefault();}});
+  hit.addEventListener("focus",()=>show(ky)); hit.addEventListener("blur",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  const lg=document.getElementById("legend"); lg.replaceChildren();
+  for(const s of ser){const sp=document.createElement("span");const k=document.createElement("i");k.className="key";k.style.borderColor=s.color;sp.append(k,document.createTextNode(s.label));lg.appendChild(sp);}
+  document.getElementById("caption").textContent=CAP[m];
+  const tb=document.getElementById("table"); tb.replaceChildren();
+  const hr=tb.insertRow(); for(const t of ["Year",...ser.map(s=>s.label)]){const th=document.createElement("th");th.textContent=t;hr.appendChild(th);}
+  const years=[...new Set(ser.flatMap(s=>s.pts.map(p=>p[0])))].sort((a,b)=>a-b);
+  for(const yr of years){const r=tb.insertRow();r.insertCell().textContent=yr;lookup.forEach(mp=>{r.insertCell().textContent=fmtV(mp.get(yr));});}
+}
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".seg button").forEach(o=>o.setAttribute("aria-pressed",String(o===b)));draw(b.dataset.m);}));
+draw("Route miles");
+</script>
+<script>if(window.top===window.self)document.getElementById("cephCite").hidden=false;</script>
+<script>(function(){function h(){parent.postMessage({cephEmbed:'railway-route-miles',height:Math.ceil(document.documentElement.scrollHeight)},'*');}addEventListener('load',h);if(window.ResizeObserver)new ResizeObserver(h).observe(document.body);document.addEventListener('toggle',h,true);})();</script>
+</body></html>

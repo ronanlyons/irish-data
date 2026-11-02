@@ -72,7 +72,7 @@ body{background:#FFFFFF}
     <div class="controls">
       <div class="seg" role="group" aria-label="Measure">
         <button type="button" data-m="Route miles" aria-pressed="true">Route miles</button>
-        <button type="button" data-m="Share of the island's route miles" aria-pressed="false">Share of the island</button>
+        <button type="button" data-m="Share of the island's route miles" aria-pressed="false">Share of the total</button>
       </div>
       <div class="legend" id="legend"></div>
     </div>
@@ -111,7 +111,7 @@ let svg;
 function draw(m){
   if(svg) svg.remove();
   fmtV=m.startsWith("Share")?(v=>v==null?"..":v.toFixed(1)+"%"):fmt;
-  const ser=series(m), all=ser.flatMap(s=>s.pts.map(p=>p[1])), ymax=niceMax(Math.max(...all)*1.05);
+  const ser=series(m), all=ser.flatMap(s=>s.pts.map(p=>p[1])), ymax=m.startsWith("Share")?100:niceMax(Math.max(...all)*1.05);
   const x=y=>M.l+(y-X0)/(X1-X0)*(W-M.l-M.r), y=v=>H-M.b-(v/ymax)*(H-M.t-M.b);
   svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":`${m}, 1834 to 2024`});
   plot.insertBefore(svg,tip);

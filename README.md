@@ -10,4 +10,4 @@ Map boundaries: © OpenStreetMap contributors (ODbL), via townlands.ie.
 ## How to cite
 Each data set gives its own suggested citation on its chart page and in its Excel file, in this form:
 
-Lyons, R. C. (2026), "Title of the data set", CEPH Historical Irish Data series, version of [date], [link to the chart page].
+Lyons, Ronan C. (2026), "Title of the data set", CEPH Historical Irish Data series, version of [date], [link to the chart page].

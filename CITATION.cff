@@ -5,5 +5,5 @@ type: dataset
 authors:
   - family-names: Lyons
     given-names: Ronan C.
-url: "https://ronanlyons.github.io/irish-data/"
+url: "https://data.ronanlyons.com/"
 repository-code: "https://github.com/ronanlyons/irish-data"

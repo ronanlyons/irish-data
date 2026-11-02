@@ -1,6 +1,6 @@
 # Irish historical data: charts and downloads
 
-Interactive charts and data files from the Centre for Economic History (CEPH) at Trinity College Dublin,
+Interactive charts and data files from the Centre for Economics, Policy and History (CEPH) at Trinity College Dublin,
 embedded on ceph.ie and ronanlyons.com. Each chart page in `charts/` is shown on those sites in a frame;
 the matching data files are in `data/`.
 

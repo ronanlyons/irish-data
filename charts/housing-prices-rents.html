@@ -227,5 +227,5 @@ document.querySelectorAll(".seg").forEach(g=>g.querySelectorAll("button").forEac
 drawD(); drawQ();
 </script>
 <script>if(window.top===window.self)document.getElementById("cephCite").hidden=false;</script>
-<script>(function(){function h(){parent.postMessage({cephEmbed:'housing-prices-rents',height:Math.ceil(document.documentElement.scrollHeight)},'*');}addEventListener('load',h);if(window.ResizeObserver)new ResizeObserver(h).observe(document.body);document.addEventListener('toggle',h,true);})();</script>
+<script>(function(){function h(){var w=document.querySelector('.wrap');parent.postMessage({cephEmbed:'housing-prices-rents',height:Math.ceil((w?w.getBoundingClientRect().bottom+window.scrollY:document.body.scrollHeight)+8)},'*');}addEventListener('load',h);if(window.ResizeObserver)new ResizeObserver(h).observe(document.body);document.addEventListener('toggle',h,true);})();</script>
 </body></html>

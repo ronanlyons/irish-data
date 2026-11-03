@@ -1,6 +1,7 @@
 # Irish historical data: charts and downloads
 
-Interactive charts and data files from the Centre for Economics, Policy and History (CEPH) at Trinity College Dublin,
+Interactive charts and data files by Ronan Lyons (Trinity College Dublin), including the Historical Irish Data series of the
+Centre for Economics, Policy and History (CEPH) at Trinity College Dublin,
 embedded on ceph.ie and ronanlyons.com. Each chart page in `charts/` is shown on those sites in a frame;
 the matching data files are in `data/`.
 
@@ -11,3 +12,4 @@ Map boundaries: © OpenStreetMap contributors (ODbL), via townlands.ie.
 Each data set gives its own suggested citation on its chart page and in its Excel file, in this form:
 
 Lyons, Ronan C. (2026), "Title of the data set", CEPH Historical Irish Data series, version of [date], [link to the chart page].
+Data sets outside the CEPH series (housing prices and rents) name their own sources in their citation.

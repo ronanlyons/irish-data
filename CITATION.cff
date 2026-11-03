@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "Each data set has its own suggested citation on its chart page and in its Excel file."
-title: "CEPH Historical Irish Data series"
+title: "Irish data: charts and data files (incl. the CEPH Historical Irish Data series)"
 type: dataset
 authors:
   - family-names: Lyons

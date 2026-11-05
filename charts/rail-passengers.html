@@ -1,0 +1,205 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Railway passengers, 1836-2001</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<style>
+/* Layout: one ceph.ie data-set entry: title block, chart card(s), how the sources join, about the figures, downloads.
+   Style copied from showcase/schools_pilot/entry_template.html; map tokens --m0..--m5 from showcase/entry_kit. */
+:root{
+  --bg:#F3F5F4; --surface:#FFFFFF; --fg:#18211E; --muted:#5A6661; --rule:#D5DCD8; --grid:#E6EAE8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#8a5fc4; --gap:#B23F35; --seam:#18211E;
+  --ok:#DCEFE4; --ok-fg:#1D5E40; --mid:#F6EAD2; --mid-fg:#7A4F0E; --bad:#F6DEDA; --bad-fg:#8E2E26;
+  --m0:#E3E6E4; --m1:#E3EFF9; --m2:#B4D3EE; --m3:#78AEDE; --m4:#3A84C9; --m5:#1A5795;
+  --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+  --label:"IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+
+
+body{background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:18px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding-inline:20px;padding-block:36px 72px}
+.prose{max-width:66ch}
+h1,h2,h3{font-weight:500;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.4rem} h2{font-size:1.45rem;margin-top:2.6rem;margin-bottom:.5rem} h3{font-size:1.1rem}
+p{margin:.6rem 0}
+.eyebrow{font-family:var(--label);font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.banner{font-family:var(--label);font-size:.88rem;background:var(--mid);color:var(--mid-fg);padding:8px 12px;border-radius:4px;margin-bottom:18px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--label);font-size:.92rem;color:var(--muted);margin-top:.6rem}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 18px 12px;margin-top:22px}
+.controls{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.seg button{font-family:var(--label);font-size:.92rem;background:transparent;color:var(--fg);border:0;padding:6px 14px;cursor:pointer}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--s1);outline-offset:-2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--label);font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.key{width:18px;height:0;border-top:2.5px solid}
+.plot{position:relative;margin-top:10px;overflow-x:auto}
+.plot svg{display:block;width:100%;min-width:560px;height:auto}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:6px 10px;font-family:var(--label);font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.08);min-width:150px}
+.tip .yr{color:var(--muted);margin-bottom:2px}
+.tip .row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.tip .row b{font-variant-numeric:tabular-nums;font-weight:600}
+.tip .row span{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+.tip .note{color:var(--muted);font-size:.78rem;margin-top:3px;max-width:240px}
+.caption{font-family:var(--label);font-size:.85rem;color:var(--muted);margin-top:6px}
+details{margin-top:10px;font-family:var(--label);font-size:.9rem}
+summary{cursor:pointer;color:var(--muted)}
+.tbl{overflow-x:auto;max-height:340px;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:4px 10px 4px 0;border-bottom:1px solid var(--rule);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 28px;font-size:.98rem}
+.facts > div{min-width:0}
+.facts dt{font-family:var(--label);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.facts dd{margin:0}
+.facts ul{margin:0;padding-left:1.1em}
+.check{list-style:none;padding:0;margin:0}
+.check li{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule);font-size:.97rem}
+.chip{font-family:var(--label);font-size:.76rem;font-weight:500;padding:1px 8px;border-radius:99px;white-space:nowrap;height:fit-content;margin-top:3px}
+.c-ok{background:var(--ok);color:var(--ok-fg)} .c-mid{background:var(--mid);color:var(--mid-fg)} .c-bad{background:var(--bad);color:var(--bad-fg)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.85em}
+@media (max-width:520px){ body{font-size:17px} h1{font-size:1.9rem} .card{padding:14px 12px 10px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+
+/* embed (WordPress iframe): white ground, no page padding beyond the cards */
+:root{--bg:#FFFFFF}
+body{background:#FFFFFF}
+.wrap{padding-block:4px 8px;max-width:none}
+</style></head><body>
+<div class="wrap">
+<section class="card" aria-label="Chart">
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Measure">
+        <button type="button" data-m="n" aria-pressed="true">Passengers</button>
+        <button type="button" data-m="s" aria-pressed="false">Class shares</button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="plot" id="plot"><div class="tip" id="tip" hidden></div></div>
+    <div class="caption" id="caption"></div>
+    <details><summary>Table of figures</summary><div class="tbl"><table id="table"></table></div></details>
+  </section>
+<p id="cephCite" hidden style="font-size:13px;color:#5B6670;margin:12px 0 0">How to cite: Lyons, Ronan C. (2026), &quot;Railway passengers, 1836-2001&quot;, CEPH Historical Irish Data series, version of 5 November 2026, https://data.ronanlyons.com/charts/rail-passengers.html</p>
+</div>
+<script>
+const DATA = {"lines":{"june":[[1836,1237800,"year to 30 June 1836","june","first year: the line opened on 17 December 1834, so the year to June 1836 covers more than 12 months"],[1837,1184428,"year to 30 June 1837","june",""],[1838,1243972,"year to 30 June 1838","june",""],[1839,1341208,"year to 30 June 1839","june",""],[1840,1358761,"year to 30 June 1840","june",""],[1841,1629024,"year to 30 June 1841","june",""],[1842,2046903,"year to 30 June 1842","june",""],[1843,2074444,"year to 30 June 1843","june",""],[1844,2588096,"year to 30 June 1844","june",""],[1845,3481707,"year to 30 June 1845","june",""],[1846,3610506,"year to 30 June 1846","june",""],[1847,3866294,"year to 30 June 1847","june",""],[1848,4374749,"year to 30 June 1848","june",""],[1849,4963856,"year to 30 June 1849","june",""],[1850,5174632,"year to 30 June 1850","june",""],[1851,5754518,"year to 30 June 1851","june",""],[1852,5630067,"year to 30 June 1852","june","total includes holders of periodical tickets"],[1853,6474266,"year to 30 June 1853","june","total includes holders of periodical tickets; 2nd class read as 2,618,190 (the scan looks like 2,018,190; only 2,618,190 adds to the printed total)"]],"dec":[[1849.5,6059947,"calendar year 1849","dec",""],[1850.5,5495796,"calendar year 1850","dec",""],[1851.5,5627875,"calendar year 1851","dec",""],[1852.5,6162150,"calendar year 1852","dec",""],[1853.5,7070717,"calendar year 1853","dec",""],[1854.5,6906811,"calendar year 1854","dec",""],[1855.5,7207609,"calendar year 1855","dec",""],[1856.5,7874689,"calendar year 1856","dec",""],[1857.5,8407312,"calendar year 1857","dec",""],[1858.5,8428387,"calendar year 1858","dec","later editions misprint the total; the earlier printing, which the classes add to, is used"],[1859.5,9438182,"calendar year 1859","dec",""],[1860.5,9983553,"calendar year 1860","dec",""],[1861.5,10679210,"calendar year 1861","dec",""],[1862.5,10429216,"calendar year 1862","dec",""],[1863.5,11462191,"calendar year 1863","dec",""],[1864.5,11902049,"calendar year 1864","dec",""],[1865.5,13173649,"calendar year 1865","dec",""],[1866.5,13074017,"calendar year 1866","dec",""],[1867.5,14008663,"calendar year 1867","dec","printed total; the classes add to 50 more"],[1868.5,11792171,"calendar year 1868","dec","as printed in every edition; the company table gives 13,262,044 for the same year"],[1869.5,13308677,"calendar year 1869","dec",""],[1870.5,14324613,"calendar year 1870","dec",""],[1871.5,15547934,"calendar year 1871","dec",""],[1872.5,16327416,"calendar year 1872","dec",""],[1873.5,16342306,"calendar year 1873","dec",""],[1874.5,16535578,"calendar year 1874","dec",""],[1875.5,16873661,"calendar year 1875","dec","printed total; the classes add to 20 less"],[1876.5,17356263,"calendar year 1876","dec",""],[1877.5,17266746,"calendar year 1877","dec",""],[1878.5,17881146,"calendar year 1878","dec",""],[1879.5,16402397,"calendar year 1879","dec",""],[1880.5,17259017,"calendar year 1880","dec",""],[1881.5,17643260,"calendar year 1881","dec",""],[1882.5,18723988,"calendar year 1882","dec",""],[1883.5,19284852,"calendar year 1883","dec",""],[1884.5,19555598,"calendar year 1884","dec",""],[1885.5,19120662,"calendar year 1885","dec",""],[1886.5,18720265,"calendar year 1886","dec",""],[1887.5,19470958,"calendar year 1887","dec",""],[1888.5,19912897,"calendar year 1888","dec",""],[1889.5,21012035,"calendar year 1889","dec",""],[1890.5,21413281,"calendar year 1890","dec",""],[1891.5,22202258,"calendar year 1891","dec",""],[1892.5,22647010,"calendar year 1892","dec","later editions misprint the total; the earlier printing, which the classes add to, is used"],[1893.5,23715061,"calendar year 1893","dec",""],[1894.5,24536387,"calendar year 1894","dec",""],[1895.5,26245548,"calendar year 1895","dec",""],[1896.5,26565270,"calendar year 1896","dec",""],[1897.5,25905299,"calendar year 1897","dec",""],[1898.5,26632264,"calendar year 1898","dec",""],[1899.5,27414633,"calendar year 1899","dec",""],[1900.5,27649815,"calendar year 1900","dec",""],[1901.5,26853332,"calendar year 1901","dec",""],[1902.5,28210468,"calendar year 1902","dec",""],[1903.5,28628083,"calendar year 1903","dec",""],[1904.5,28979628,"calendar year 1904","dec",""],[1905.5,29025575,"calendar year 1905","dec",""],[1906.5,29216710,"calendar year 1906","dec",""],[1907.5,29712282,"calendar year 1907","dec",""],[1908.5,29048410,"calendar year 1908","dec",""],[1909.5,29593664,"calendar year 1909","dec",""],[1910.5,30725252,"calendar year 1910","dec",""],[1911.5,30814837,"calendar year 1911","dec",""],[1912.5,29162404,"calendar year 1912","dec",""],[1913.5,31282064,"calendar year 1913","dec",""]],"state":[[1926.5,15521280,"calendar year 1926","A",""],[1927.5,14181398,"calendar year 1927","A",""],[1928.5,13042058,"calendar year 1928","A",""],[1929.5,13779076,"calendar year 1929","A",""],[1930.5,12572204,"calendar year 1930","A",""],[1931.5,11885454,"calendar year 1931","A",""],[1932.5,11288572,"calendar year 1932","A",""],[1933.5,12085047,"calendar year 1933","A",""],[1934.5,12278655,"calendar year 1934","A",""],[1935.5,14433780,"calendar year 1935","A",""],[1936.5,12506824,"calendar year 1936","A",""],[1937.5,12017942,"calendar year 1937","A",""],[1938.5,11255733,"calendar year 1938","A",""],[1939.5,11370126,"calendar year 1939","A",""],[1940.5,10579984,"calendar year 1940","A",""],[1941.5,9746535,"calendar year 1941","A",""],[1942.5,6745609,"calendar year 1942","A",""],[1943.5,9000157,"calendar year 1943","A",""],[1944.5,8548349,"calendar year 1944","A",""],[1945.5,9430052,"calendar year 1945","A",""],[1946.5,9836737,"calendar year 1946","A",""],[1947.5,10774905,"calendar year 1947","A",""],[1948.5,9889610,"calendar year 1948","A",""],[1949.5,9459039,"calendar year 1949","A",""],[1950.5,7999607,"calendar year 1950","A",""],[1951.75,7932000,"year to 31 March 1952 (1951-52)","B",""],[1952.75,7871000,"year to 31 March 1953 (1952-53)","B",""],[1953.75,7771000,"year to 31 March 1954 (1953-54)","B",""],[1954.75,7847000,"year to 31 March 1955 (1954-55)","B",""],[1955.75,8542000,"year to 31 March 1956 (1955-56)","B",""],[1956.75,7868000,"year to 31 March 1957 (1956-57)","B",""],[1957.75,7898000,"year to 31 March 1958 (1957-58)","B","last year counted as originating traffic"],[1958.75,11714000,"year to 31 March 1959 (1958-59)","C2",""],[1959.75,12276000,"year to 31 March 1960 (1959-60)","C2",""],[1960.75,11053000,"year to 31 March 1961 (1960-61)","C2",""],[1961.75,10157000,"year to 31 March 1962 (1961-62)","C2",""],[1962.75,9833000,"year to 31 March 1963 (1962-63)","C2",""],[1963.75,9846000,"year to 31 March 1964 (1963-64)","C2",""],[1964.75,9304000,"year to 31 March 1965 (1964-65)","C2",""],[1965.75,8981000,"year to 31 March 1966 (1965-66)","C2",""],[1966.75,9294000,"year to 31 March 1967 (1966-67)","C2",""],[1967.75,8890000,"year to 31 March 1968 (1967-68)","C2",""],[1968.75,9549000,"year to 31 March 1969 (1968-69)","C2",""],[1969.75,9957000,"year to 31 March 1970 (1969-70)","C2",""],[1970.75,10332000,"year to 31 March 1971 (1970-71)","C2",""],[1971.75,11001000,"year to 31 March 1972 (1971-72)","C2",""],[1972.75,11861000,"year to 31 March 1973 (1972-73)","C2",""],[1973.75,12695000,"year to 31 March 1974 (1973-74)","C2",""],[1975.5,13891000,"calendar year 1975","F",""],[1976.5,13608000,"calendar year 1976","F",""],[1977.5,14697000,"calendar year 1977","F",""],[1978.5,15905000,"calendar year 1978","F",""],[1979.5,17886000,"calendar year 1979","F",""],[1980.5,16654000,"calendar year 1980","F",""],[1981.5,15374000,"calendar year 1981","F",""],[1982.5,12813000,"calendar year 1982","F",""],[1983.5,13027000,"calendar year 1983","F",""],[1984.5,15560000,"calendar year 1984","F",""],[1985.5,20090000,"calendar year 1985","F",""],[1986.5,21735000,"calendar year 1986","F",""],[1987.5,24895000,"calendar year 1987","F",""],[1988.5,24043000,"calendar year 1988","F",""],[1989.5,24595000,"calendar year 1989","F",""],[1990.5,26767000,"calendar year 1990","F",""],[1991.5,26837000,"calendar year 1991","F",""],[1992.5,25837000,"calendar year 1992","F",""],[1993.5,26143000,"calendar year 1993","F",""],[1994.5,25813000,"calendar year 1994","F",""],[1995.5,27124000,"calendar year 1995","F",""],[1996.5,27930000,"calendar year 1996","F",""],[1997.5,29467000,"calendar year 1997","F",""],[1998.5,32146000,"calendar year 1998","F",""],[1999.5,32765000,"calendar year 1999","F",""],[2000.5,31721000,"calendar year 2000","F",""],[2001.5,34206000,"calendar year 2001","F",""]],"gnr":[[1926.5,7771264,"calendar year 1926","GA",""],[1927.5,8059262,"calendar year 1927","GA",""],[1928.5,8358172,"calendar year 1928","GA",""],[1929.5,8693908,"calendar year 1929","GA",""],[1930.5,8307861,"calendar year 1930","GA",""],[1931.5,8242410,"calendar year 1931","GA",""],[1932.5,8013233,"calendar year 1932","GA",""],[1933.5,5640343,"calendar year 1933","GA",""],[1934.5,7359472,"calendar year 1934","GA",""],[1935.5,8129377,"calendar year 1935","GA",""],[1936.5,8014524,"calendar year 1936","GA",""],[1937.5,7996788,"calendar year 1937","GA",""],[1938.5,8066997,"calendar year 1938","GA",""],[1939.5,8477827,"calendar year 1939","GA",""],[1940.5,9353083,"calendar year 1940","GA",""],[1941.5,15404585,"calendar year 1941","GA",""],[1942.5,16903652,"calendar year 1942","GA",""],[1943.5,17221319,"calendar year 1943","GA",""],[1944.5,17830975,"calendar year 1944","GA",""],[1945.5,16644566,"calendar year 1945","GA",""],[1946.5,14298684,"calendar year 1946","GA",""],[1947.5,13033072,"calendar year 1947","GA",""],[1948.5,12268307,"calendar year 1948","GA",""],[1949.5,11089158,"calendar year 1949","GA",""],[1950.5,9367414,"calendar year 1950","GA",""],[1951.5,9411000,"calendar year 1951","GA",""],[1952.5,8932000,"calendar year 1952","GA",""],[1953.5,8735000,"calendar year 1953","GA",""],[1954.5,8171000,"calendar year 1954","GA",""],[1955.5,8265000,"calendar year 1955","GA",""],[1956.5,7911000,"calendar year 1956","GA",""]],"state_e":[[1957.75,8387000,"year to 31 March 1958 (1957-58)","C0","the same year counted as traffic conveyed"],[1974.62,11376000,"April to December 1974 (9 months)","E","9 months only"]]},"shares":[[1839,"year to 30 June 1839",2.13,50.76,47.11,0.0,"june"],[1840,"year to 30 June 1840",2.78,45.7,51.53,0.0,"june"],[1841,"year to 30 June 1841",2.8,50.59,46.62,0.0,"june"],[1842,"year to 30 June 1842",2.62,53.98,43.4,0.0,"june"],[1843,"year to 30 June 1843",4.6,54.95,40.45,0.0,"june"],[1844,"year to 30 June 1844",5.54,49.81,44.65,0.0,"june"],[1845,"year to 30 June 1845",5.67,48.36,45.97,0.0,"june"],[1846,"year to 30 June 1846",6.46,46.98,46.56,0.0,"june"],[1847,"year to 30 June 1847",7.54,45.08,47.38,0.0,"june"],[1848,"year to 30 June 1848",7.94,42.7,49.36,0.0,"june"],[1849.5,"calendar year 1849",8.67,50.47,40.85,0.0,"dec"],[1850.5,"calendar year 1850",11.13,46.37,42.5,0.0,"dec"],[1851.5,"calendar year 1851",10.69,39.69,49.61,0.0,"dec"],[1852.5,"calendar year 1852",10.65,38.3,51.04,0.0,"dec"],[1853.5,"calendar year 1853",11.39,40.24,48.37,0.0,"dec"],[1854.5,"calendar year 1854",13.37,39.82,46.82,0.0,"dec"],[1855.5,"calendar year 1855",12.85,40.07,47.09,0.0,"dec"],[1856.5,"calendar year 1856",13.14,40.93,45.93,0.0,"dec"],[1857.5,"calendar year 1857",13.23,40.24,46.53,0.0,"dec"],[1858.5,"calendar year 1858",13.71,39.67,46.62,0.0,"dec"],[1859.5,"calendar year 1859",13.84,37.82,48.34,0.0,"dec"],[1860.5,"calendar year 1860",14.5,36.84,48.66,0.0,"dec"],[1861.5,"calendar year 1861",13.93,34.97,51.1,0.0,"dec"],[1862.5,"calendar year 1862",13.23,32.86,53.91,0.0,"dec"],[1863.5,"calendar year 1863",13.32,31.24,55.44,0.0,"dec"],[1864.5,"calendar year 1864",12.96,30.16,56.88,0.0,"dec"],[1865.5,"calendar year 1865",13.43,29.71,56.86,0.0,"dec"],[1866.5,"calendar year 1866",12.39,27.74,59.87,0.0,"dec"],[1867.5,"calendar year 1867",12.48,27.91,59.61,0.0,"dec"],[1868.5,"calendar year 1868",12.37,30.28,57.35,0.0,"dec"],[1869.5,"calendar year 1869",11.8,28.89,59.31,0.0,"dec"],[1870.5,"calendar year 1870",11.94,28.23,59.83,0.0,"dec"],[1871.5,"calendar year 1871",12.53,27.81,59.66,0.0,"dec"],[1872.5,"calendar year 1872",11.89,25.55,62.56,0.0,"dec"],[1873.5,"calendar year 1873",11.53,24.24,64.24,0.0,"dec"],[1874.5,"calendar year 1874",11.58,25.18,63.24,0.0,"dec"],[1875.5,"calendar year 1875",11.37,24.69,63.94,0.0,"dec"],[1876.5,"calendar year 1876",10.73,24.25,65.02,0.0,"dec"],[1877.5,"calendar year 1877",10.55,23.7,65.75,0.0,"dec"],[1878.5,"calendar year 1878",10.26,23.51,66.23,0.0,"dec"],[1879.5,"calendar year 1879",10.0,23.22,66.78,0.0,"dec"],[1880.5,"calendar year 1880",9.79,22.68,67.52,0.0,"dec"],[1881.5,"calendar year 1881",9.5,22.79,67.71,0.0,"dec"],[1882.5,"calendar year 1882",8.76,21.41,69.82,0.0,"dec"],[1883.5,"calendar year 1883",8.81,21.66,69.53,0.0,"dec"],[1884.5,"calendar year 1884",8.37,21.65,69.98,0.0,"dec"],[1885.5,"calendar year 1885",8.05,21.49,70.47,0.0,"dec"],[1886.5,"calendar year 1886",7.4,21.55,71.05,0.0,"dec"],[1887.5,"calendar year 1887",7.02,21.59,71.39,0.0,"dec"],[1888.5,"calendar year 1888",6.87,21.17,71.96,0.0,"dec"],[1889.5,"calendar year 1889",6.64,20.91,72.45,0.0,"dec"],[1890.5,"calendar year 1890",6.28,20.24,73.48,0.0,"dec"],[1891.5,"calendar year 1891",6.81,18.9,74.29,0.0,"dec"],[1892.5,"calendar year 1892",6.64,18.5,74.87,0.0,"dec"],[1893.5,"calendar year 1893",6.27,18.14,75.59,0.0,"dec"],[1894.5,"calendar year 1894",6.34,17.32,76.34,0.0,"dec"],[1895.5,"calendar year 1895",6.19,17.93,75.88,0.0,"dec"],[1896.5,"calendar year 1896",6.13,16.5,77.36,0.0,"dec"],[1897.5,"calendar year 1897",5.84,15.34,78.82,0.0,"dec"],[1898.5,"calendar year 1898",5.69,15.07,79.23,0.0,"dec"],[1899.5,"calendar year 1899",5.65,14.5,79.84,0.0,"dec"],[1900.5,"calendar year 1900",5.41,14.2,80.38,0.0,"dec"],[1901.5,"calendar year 1901",5.3,13.51,81.19,0.0,"dec"],[1902.5,"calendar year 1902",5.15,12.95,81.9,0.0,"dec"],[1903.5,"calendar year 1903",5.11,13.06,81.83,0.0,"dec"],[1904.5,"calendar year 1904",5.08,12.88,82.04,0.0,"dec"],[1905.5,"calendar year 1905",4.98,12.41,82.6,0.0,"dec"],[1906.5,"calendar year 1906",4.91,11.78,83.31,0.0,"dec"],[1907.5,"calendar year 1907",4.75,10.99,84.26,0.0,"dec"],[1908.5,"calendar year 1908",4.72,10.41,84.87,0.0,"dec"],[1909.5,"calendar year 1909",4.54,9.9,85.56,0.0,"dec"],[1910.5,"calendar year 1910",4.36,9.84,85.8,0.0,"dec"],[1911.5,"calendar year 1911",4.31,9.71,85.98,0.0,"dec"],[1912.5,"calendar year 1912",4.2,9.31,86.49,0.0,"dec"],[1913.5,"calendar year 1913",3.75,8.6,87.66,0.0,"dec"],[1926.5,"calendar year 1926",4.55,0.85,73.0,21.61,"A"],[1927.5,"calendar year 1927",4.03,0.88,72.25,22.84,"A"],[1928.5,"calendar year 1928",3.7,0.84,72.59,22.87,"A"],[1929.5,"calendar year 1929",4.19,0.59,70.79,24.43,"A"],[1930.5,"calendar year 1930",3.54,0.29,66.46,29.71,"A"],[1931.5,"calendar year 1931",3.46,0.0,66.74,29.8,"A"],[1932.5,"calendar year 1932",3.09,0.0,67.08,29.83,"A"],[1933.5,"calendar year 1933",3.37,0.0,67.46,29.17,"A"],[1934.5,"calendar year 1934",2.67,0.0,65.23,32.1,"A"],[1935.5,"calendar year 1935",2.74,0.0,66.59,30.67,"A"],[1936.5,"calendar year 1936",2.37,0.0,61.68,35.95,"A"],[1937.5,"calendar year 1937",2.35,0.0,61.49,36.16,"A"],[1938.5,"calendar year 1938",1.93,0.0,59.98,38.09,"A"],[1939.5,"calendar year 1939",1.77,0.0,58.08,40.15,"A"],[1940.5,"calendar year 1940",2.2,0.0,58.1,39.7,"A"],[1941.5,"calendar year 1941",4.59,0.0,56.85,38.56,"A"],[1942.5,"calendar year 1942",6.67,0.0,52.77,40.56,"A"],[1943.5,"calendar year 1943",8.68,0.0,58.75,32.57,"A"],[1944.5,"calendar year 1944",9.38,0.0,53.64,36.98,"A"],[1945.5,"calendar year 1945",9.35,0.0,56.09,34.56,"A"],[1946.5,"calendar year 1946",7.71,0.0,59.1,33.19,"A"],[1947.5,"calendar year 1947",6.77,0.0,64.4,28.83,"A"],[1948.5,"calendar year 1948",6.26,0.0,63.47,30.27,"A"],[1949.5,"calendar year 1949",4.64,0.0,66.38,28.98,"A"],[1950.5,"calendar year 1950",3.73,0.0,66.85,29.42,"A"],[1951.75,"year to 31 March 1952 (1951-52)",3.18,0.0,69.2,27.62,"B"],[1952.75,"year to 31 March 1953 (1952-53)",2.93,0.0,69.5,27.57,"B"],[1953.75,"year to 31 March 1954 (1953-54)",2.57,0.0,69.99,27.44,"B"],[1954.75,"year to 31 March 1955 (1954-55)",2.26,0.0,71.99,25.75,"B"],[1955.75,"year to 31 March 1956 (1955-56)",1.92,0.0,74.11,23.97,"B"],[1956.75,"year to 31 March 1957 (1956-57)",1.8,0.0,70.75,27.44,"B"],[1957.75,"year to 31 March 1958 (1957-58)",1.66,0.0,71.31,27.03,"B"],[1958.75,"year to 31 March 1959 (1958-59)",1.55,0.0,68.16,30.29,"C2"],[1959.75,"year to 31 March 1960 (1959-60)",1.34,0.0,69.59,29.07,"C2"],[1960.75,"year to 31 March 1961 (1960-61)",1.38,0.0,69.07,29.55,"C2"],[1961.75,"year to 31 March 1962 (1961-62)",1.38,0.0,67.47,31.15,"C2"],[1962.75,"year to 31 March 1963 (1962-63)",1.29,0.0,66.06,32.65,"C2"],[1963.75,"year to 31 March 1964 (1963-64)",1.11,0.0,67.43,31.46,"C2"],[1964.75,"year to 31 March 1965 (1964-65)",1.27,0.0,66.52,32.21,"C2"],[1965.75,"year to 31 March 1966 (1965-66)",1.22,0.0,67.84,30.93,"C2"],[1966.75,"year to 31 March 1967 (1966-67)",1.11,0.0,69.97,28.92,"C2"],[1967.75,"year to 31 March 1968 (1967-68)",1.09,0.0,69.8,29.11,"C2"],[1968.75,"year to 31 March 1969 (1968-69)",1.02,0.0,71.42,27.56,"C2"],[1969.75,"year to 31 March 1970 (1969-70)",0.94,0.0,71.4,27.66,"C2"],[1970.75,"year to 31 March 1971 (1970-71)",0.98,0.0,68.81,30.22,"C2"],[1971.75,"year to 31 March 1972 (1971-72)",1.03,0.0,64.96,34.01,"C2"],[1972.75,"year to 31 March 1973 (1972-73)",0.87,0.0,62.38,36.75,"C2"],[1973.75,"year to 31 March 1974 (1973-74)",0.21,0.0,61.6,38.19,"C2"],[1974.62,"April to December 1974 (9 months)",0.17,0.0,63.15,36.68,"E"],[1975.5,"calendar year 1975",0.18,0.0,55.24,44.58,"F"],[1976.5,"calendar year 1976",0.14,0.0,51.95,47.91,"F"],[1977.5,"calendar year 1977",0.14,0.0,52.14,47.72,"F"],[1978.5,"calendar year 1978",0.14,0.0,52.05,47.81,"F"]]};
+const SER = {
+  june:{label:"Ireland, years to 30 June", short:"Ireland (June years)", color:"var(--s1)", dash:"5 3"},
+  dec:{label:"Ireland, calendar years", short:"Ireland", color:"var(--s1)"},
+  state:{label:"26 counties: GSR / CIÉ / Iarnród Éireann", short:"26 counties: state system", color:"var(--s3)"},
+  gnr:{label:"GNR, both sides of the border", short:"GNR (cross-border)", color:"var(--s2)"}
+};
+const BASIS = {june:"all railways in Ireland", dec:"all railways in Ireland",
+  A:"GSR, CIÉ from 1945: traffic starting on the system", B:"CIÉ: traffic starting on the system; former GNR lines not included",
+  C0:"CIÉ: all traffic carried; former GNR lines not included", C2:"CIÉ: all traffic carried, with the former GNR lines in the State",
+  E:"CIÉ: 9 months only", F:"CIÉ, Iarnród Éireann from 1987", GA:"whole GNR system, both sides of the border; not in the 26-county line"};
+const CLS = [{k:2,label:"First class",color:"var(--s1)"},{k:3,label:"Second class",color:"var(--s2)"},{k:4,label:"Third class (from 1957 standard)",color:"var(--s3)"},{k:5,label:"Workmen and season tickets",color:"var(--muted)"}];
+const CAP = {
+  n:"Passenger journeys a year. Ireland: all railways (Thom's). From 1926: the state system in the 26 counties, and the Great Northern Railway as a whole cross-border system to 1956 (Statistical Abstracts). Hollow points: 1957-58 counted as traffic carried, and April to December 1974. Pieces are not joined where the basis changes.",
+  s:"Share of passenger journeys by class. Ireland to 1913: the three classes (Thom's). 26 counties: GSR and CIÉ, with workmen and season tickets (600 journeys a ticket). From 1957 the ordinary class is printed as second or standard class and is shown here with third class."
+};
+const W=880,H=400,M={l:64,r:30,t:22,b:34},X0=1830,X1=2005;
+const NS="http://www.w3.org/2000/svg", F="IBM Plex Sans Condensed, Arial Narrow, sans-serif";
+const plot=document.getElementById("plot"), tip=document.getElementById("tip");
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+const x=v=>M.l+(v-X0)/(X1-X0)*(W-M.l-M.r);
+const fmt=v=>v==null?"..":Math.round(v).toLocaleString("en-IE");
+const mil=v=>(v/1e6).toFixed(v<1e7?1:0)+" m";
+let svg;
+function frame(yv,ticks,tfmt){
+  svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img"}); plot.insertBefore(svg,tip);
+  el("rect",{x:x(1914),y:M.t,width:x(1926)-x(1914),height:H-M.t-M.b,fill:"var(--gap)","fill-opacity":".07"},svg);
+  for(const [i,t] of ["not yet","covered"].entries()) el("text",{x:x(1920),y:M.t+12+i*13,"text-anchor":"middle","font-family":F,"font-size":11,fill:"var(--muted)"},svg).textContent=t;
+  for(const v of ticks){const yy=yv(v);
+    el("line",{x1:M.l,x2:W-M.r,y1:yy,y2:yy,stroke:v?"var(--grid)":"var(--rule)","stroke-width":1},svg);
+    el("text",{x:M.l-8,y:yy+4,"text-anchor":"end","font-family":F,"font-size":12,fill:"var(--muted)"},svg).textContent=tfmt(v);}
+  for(let yr=1840;yr<=2000;yr+=20)el("text",{x:x(yr),y:H-M.b+18,"text-anchor":"middle","font-family":F,"font-size":12,fill:"var(--muted)"},svg).textContent=yr;
+  el("line",{x1:x(1922),x2:x(1922),y1:M.t+30,y2:H-M.b,stroke:"var(--seam)","stroke-width":1.2,"stroke-dasharray":"2 3"},svg);
+  el("text",{x:x(1922)+3,y:H-M.b-6,"text-anchor":"start","font-family":F,"font-size":11.5,"font-weight":600,fill:"var(--fg)"},svg).textContent="1922";
+}
+function legend(items){const lg=document.getElementById("legend");lg.replaceChildren();
+  for(const it of items){const sp=document.createElement("span");const k=document.createElement("i");k.className="key"+(it.cls?" "+it.cls:"");
+    if(it.cls==="blk")k.style.background=it.color;else k.style.borderColor=it.color;sp.append(k,document.createTextNode(it.label));lg.appendChild(sp);}}
+function placeTip(px){tip.hidden=false;const box=svg.getBoundingClientRect(),left=px*box.width/W+plot.scrollLeft,tw=tip.offsetWidth||220;
+  tip.style.top="8px";tip.style.left=(left+tw+16>box.width?left-tw-12:left+12)+"px";}
+function addRow(label,val,color,cls){const r=document.createElement("div");r.className="row";const sp=document.createElement("span");
+  if(color){const k=document.createElement("i");k.className="key"+(cls?" "+cls:"");if(cls==="blk")k.style.background=color;else k.style.borderColor=color;sp.appendChild(k);}
+  sp.appendChild(document.createTextNode(label));const b=document.createElement("b");b.textContent=val;r.append(sp,b);tip.appendChild(r);}
+function addNote(t){const n=document.createElement("div");n.className="note";n.textContent=t;tip.appendChild(n);}
+function table(head,rows){const tb=document.getElementById("table");tb.replaceChildren();const hr=tb.insertRow();
+  for(const t of head){const th=document.createElement("th");th.textContent=t;hr.appendChild(th);}
+  for(const r of rows){const tr=tb.insertRow();for(const c of r)tr.insertCell().textContent=c;}}
+
+function drawN(){
+  const top=Math.max(...Object.values(DATA.lines).flat().map(p=>p[1])), st=5e6, ymax=Math.ceil(top*1.05/st)*st;
+  const y=v=>H-M.b-(v/ymax)*(H-M.t-M.b), ticks=[];for(let v=0;v<=ymax;v+=st)ticks.push(v);
+  frame(y,ticks,v=>v?(v/1e6)+" m":"0"); svg.setAttribute("aria-label","Railway passenger journeys, 1836 to 2001");
+  for(const key of ["june","dec","gnr","state"]){const s=SER[key];let d="",prev=null;
+    for(const p of DATA.lines[key]){const brk=prev==null||p[3]!==prev[3]||p[0]-prev[0]>1.6;d+=(brk?"M":"L")+x(p[0]).toFixed(1)+","+y(p[1]).toFixed(1);prev=p;}
+    el("path",{d,fill:"none",stroke:s.color,"stroke-width":2,"stroke-dasharray":s.dash||"none","stroke-linejoin":"round","stroke-linecap":"round"},svg);
+    const pts=DATA.lines[key];pts.forEach((p,i)=>{const a=pts[i-1],b=pts[i+1];
+      if((!a||a[3]!==p[3]||p[0]-a[0]>1.6)&&(!b||b[3]!==p[3]||b[0]-p[0]>1.6))el("circle",{cx:x(p[0]),cy:y(p[1]),r:3,fill:s.color},svg);});}
+  for(const p of DATA.lines.state_e)el("circle",{cx:x(p[0]),cy:y(p[1]),r:3.5,fill:"var(--surface)",stroke:SER.state.color,"stroke-width":1.8},svg);
+  // direct labels
+  const lab=(t,xx,yy,anchor,color)=>el("text",{x:xx,y:yy,"text-anchor":anchor||"start","font-family":F,"font-size":12,fill:color||"var(--fg)"},svg).textContent=t;
+  const L=a=>a[a.length-1];
+  lab("Ireland, all railways",x(1912),y(L(DATA.lines.dec)[1])-10,"end");
+  lab("years to June",x(1854),y(L(DATA.lines.june)[1])+16,"start","var(--muted)");
+  const g=DATA.lines.gnr.reduce((a,b)=>b[1]>a[1]?b:a); lab("GNR, cross-border",x(g[0]),y(g[1])-10,"middle");
+  lab("26 counties",x(L(DATA.lines.state)[0])-4,y(L(DATA.lines.state)[1])-10,"end");
+  // hover
+  const hair=el("line",{y1:M.t,y2:H-M.b,stroke:"var(--muted)","stroke-width":1,visibility:"hidden"},svg);
+  const hit=el("rect",{x:M.l,y:M.t,width:W-M.l-M.r,height:H-M.t-M.b,fill:"transparent",tabindex:0,"aria-label":"Move across the chart to read values; arrow keys step a year"},svg);
+  function show(yr){
+    yr=Math.max(1836,Math.min(2001,yr));const px=x(yr+.5);
+    hair.setAttribute("x1",px);hair.setAttribute("x2",px);hair.setAttribute("visibility","visible");
+    tip.replaceChildren();const h=document.createElement("div");h.className="yr";h.textContent=yr;tip.appendChild(h);
+    const notes=[];let any=false;
+    for(const key of ["june","dec","state","gnr"]){
+      for(const p of DATA.lines[key].filter(p=>Math.floor(p[0])===yr)){any=true;addRow(SER[key].short,fmt(p[1]),SER[key].color,SER[key].dash?"dash":"");
+        notes.push(p[2]+(key==="june"||key==="dec"?"":": "+BASIS[p[3]])+(p[4]?"; "+p[4]:""));}}
+    for(const p of DATA.lines.state_e.filter(p=>Math.floor(p[0])===yr)){any=true;addRow(p[3]==="C0"?"26 counties: carried":"26 counties: 9 months",fmt(p[1]),SER.state.color,"dot");notes.push(p[2]+": "+BASIS[p[3]]);}
+    if(!any)notes.push(yr>=1914&&yr<=1925?"Not yet covered: the returns for 1914 to 1925 are not yet held":"No figure");
+    if(yr===1922)notes.push("1922: the 26 counties become a separate state");
+    addNote(notes.join(". "));placeTip(px);}
+  hit.addEventListener("pointermove",e=>{const b=svg.getBoundingClientRect();const vx=(e.clientX-b.left)*W/b.width;show(Math.floor(X0+(vx-M.l)/(W-M.l-M.r)*(X1-X0)));});
+  hit.addEventListener("pointerleave",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  let k=1913;hit.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){k+=e.key==="ArrowRight"?1:-1;k=Math.max(1836,Math.min(2001,k));show(k);e.preventDefault();}});
+  hit.addEventListener("focus",()=>show(k));hit.addEventListener("blur",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  legend([{label:SER.dec.label,color:SER.dec.color},{label:"years to 30 June",color:SER.june.color,cls:"dash"},{label:"26 counties: state system",color:SER.state.color},{label:SER.gnr.label,color:SER.gnr.color}]);
+  const rows=[];for(const key of ["june","dec","state","gnr"])for(const p of DATA.lines[key])rows.push([p[2],SER[key].short,fmt(p[1])]);
+  for(const p of DATA.lines.state_e)rows.push([p[2],p[3]==="C0"?"26 counties: traffic carried":"26 counties: 9 months",fmt(p[1])]);
+  rows.sort((a,b)=>parseInt(a[0].match(/\d{4}/))-parseInt(b[0].match(/\d{4}/)));
+  table(["Period","Railways","Passenger journeys"],rows);
+}
+function drawS(){
+  const y=v=>H-M.b-(v/100)*(H-M.t-M.b);
+  frame(y,[0,25,50,75,100],v=>v+"%"); svg.setAttribute("aria-label","Share of passenger journeys by class, 1839 to 1978");
+  for(const s of DATA.shares){const a=x(s[0]-.5),b=x(s[0]+.5);let acc=0;
+    for(const c of CLS){const v=s[c.k];if(!v){continue;}
+      el("rect",{x:a,y:y(acc+v),width:Math.max(.5,b-a-.6),height:y(acc)-y(acc+v),fill:c.color,"fill-opacity":c.k===5?".45":".9"},svg);acc+=v;}}
+  const hair=el("line",{y1:M.t,y2:H-M.b,stroke:"var(--fg)","stroke-width":1,visibility:"hidden"},svg);
+  const hit=el("rect",{x:M.l,y:M.t,width:W-M.l-M.r,height:H-M.t-M.b,fill:"transparent",tabindex:0,"aria-label":"Move across the chart to read the shares; arrow keys step a year"},svg);
+  const S=DATA.shares;
+  function show(i){const s=S[i],px=x(s[0]);hair.setAttribute("x1",px);hair.setAttribute("x2",px);hair.setAttribute("visibility","visible");
+    tip.replaceChildren();const h=document.createElement("div");h.className="yr";h.textContent=s[1];tip.appendChild(h);
+    for(const c of [...CLS].reverse()){if(c.k===5&&(s[6]==="june"||s[6]==="dec"))continue;addRow(c.label,s[c.k].toFixed(1)+"%",c.color,"blk");}
+    addNote((s[6]==="june"||s[6]==="dec")?"Ireland, all railways (Thom's)":"26 counties: "+BASIS[s[6]]);placeTip(px);}
+  const near=xv=>S.reduce((bi,s,i)=>Math.abs(s[0]-xv)<Math.abs(S[bi][0]-xv)?i:bi,0);
+  hit.addEventListener("pointermove",e=>{const b=svg.getBoundingClientRect();const vx=(e.clientX-b.left)*W/b.width;show(near(X0+(vx-M.l)/(W-M.l-M.r)*(X1-X0)));});
+  hit.addEventListener("pointerleave",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  let k=S.findIndex(s=>s[1]==="calendar year 1913");hit.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){k=Math.max(0,Math.min(S.length-1,k+(e.key==="ArrowRight"?1:-1)));show(k);e.preventDefault();}});
+  hit.addEventListener("focus",()=>show(k));hit.addEventListener("blur",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  legend(CLS.map(c=>({label:c.label,color:c.color,cls:"blk"})));
+  table(["Period","Railways",...CLS.map(c=>c.label)],S.map(s=>[s[1],(s[6]==="june"||s[6]==="dec")?"Ireland":"26 counties",...CLS.map(c=>(c.k===5&&(s[6]==="june"||s[6]==="dec"))?"..":s[c.k].toFixed(1))]));
+}
+function draw(m){if(svg)svg.remove();tip.hidden=true;(m==="n"?drawN:drawS)();document.getElementById("caption").textContent=CAP[m];}
+document.querySelectorAll('section[aria-label="Chart"] .seg button').forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll('section[aria-label="Chart"] .seg button').forEach(o=>o.setAttribute("aria-pressed",String(o===b)));draw(b.dataset.m);}));
+draw("n");
+</script>
+<script>if(window.top===window.self)document.getElementById("cephCite").hidden=false;</script>
+<script>(function(){function h(){var w=document.querySelector('.wrap');parent.postMessage({cephEmbed:'rail-passengers',height:Math.ceil((w?w.getBoundingClientRect().bottom+window.scrollY:document.body.scrollHeight)+8)},'*');}addEventListener('load',h);if(window.ResizeObserver)new ResizeObserver(h).observe(document.body);document.addEventListener('toggle',h,true);})();</script>
+</body></html>

@@ -1,0 +1,180 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The price of bread in Dublin, 1745-1945</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap">
+<style>
+/* Layout: one ceph.ie data-set entry: title block, chart card(s), how the sources join, about the figures, downloads.
+   Style copied from showcase/migratory_entry (schools pilot); map tokens kept for the kit. */
+:root{
+  --bg:#F3F5F4; --surface:#FFFFFF; --fg:#18211E; --muted:#5A6661; --rule:#D5DCD8; --grid:#E6EAE8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --gap:#B23F35; --seam:#18211E;
+  --ok:#DCEFE4; --ok-fg:#1D5E40; --mid:#F6EAD2; --mid-fg:#7A4F0E; --bad:#F6DEDA; --bad-fg:#8E2E26;
+  --m0:#E3E6E4; --m1:#E3EFF9; --m2:#B4D3EE; --m3:#78AEDE; --m4:#3A84C9; --m5:#1A5795;
+  --serif:"Newsreader", "Iowan Old Style", Georgia, serif;
+  --label:"IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+}
+
+
+body{background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:18px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding-inline:20px;padding-block:36px 72px}
+.prose{max-width:66ch}
+h1,h2,h3{font-weight:500;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.4rem} h2{font-size:1.45rem;margin-top:2.6rem;margin-bottom:.5rem} h3{font-size:1.1rem}
+p{margin:.6rem 0}
+.eyebrow{font-family:var(--label);font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.banner{font-family:var(--label);font-size:.88rem;background:var(--mid);color:var(--mid-fg);padding:8px 12px;border-radius:4px;margin-bottom:18px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--label);font-size:.92rem;color:var(--muted);margin-top:.6rem}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 18px 12px;margin-top:22px}
+.controls{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.seg button{font-family:var(--label);font-size:.92rem;background:transparent;color:var(--fg);border:0;padding:6px 14px;cursor:pointer}
+.seg button + button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--s1);outline-offset:-2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--label);font-size:.88rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.key{width:18px;height:0;border-top:2.5px solid}
+.plot{position:relative;margin-top:10px;overflow-x:auto}
+.plot svg{display:block;width:100%;min-width:560px;height:auto}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:6px 10px;font-family:var(--label);font-size:.85rem;box-shadow:0 2px 8px rgba(0,0,0,.08);min-width:150px}
+.tip .yr{color:var(--muted);margin-bottom:2px}
+.tip .row{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.tip .row b{font-variant-numeric:tabular-nums;font-weight:600}
+.tip .row span{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+.tip .note{color:var(--muted);font-size:.78rem;margin-top:3px;max-width:240px}
+.caption{font-family:var(--label);font-size:.85rem;color:var(--muted);margin-top:6px}
+details{margin-top:10px;font-family:var(--label);font-size:.9rem}
+summary{cursor:pointer;color:var(--muted)}
+.tbl{overflow-x:auto;max-height:340px;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:4px 10px 4px 0;border-bottom:1px solid var(--rule);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:500;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px 28px;font-size:.98rem}
+.facts > div{min-width:0}
+.facts dt{font-family:var(--label);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.facts dd{margin:0}
+.facts ul{margin:0;padding-left:1.1em}
+.check{list-style:none;padding:0;margin:0}
+.check li{display:grid;grid-template-columns:auto 1fr;gap:10px;padding:7px 0;border-bottom:1px solid var(--rule);font-size:.97rem}
+.chip{font-family:var(--label);font-size:.76rem;font-weight:500;padding:1px 8px;border-radius:99px;white-space:nowrap;height:fit-content;margin-top:3px}
+.c-ok{background:var(--ok);color:var(--ok-fg)} .c-mid{background:var(--mid);color:var(--mid-fg)} .c-bad{background:var(--bad);color:var(--bad-fg)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.85em}
+@media (max-width:520px){ body{font-size:17px} h1{font-size:1.9rem} .card{padding:14px 12px 10px} }
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+
+/* embed (WordPress iframe): white ground, no page padding beyond the cards */
+:root{--bg:#FFFFFF}
+body{background:#FFFFFF}
+.wrap{padding-block:4px 8px;max-width:none}
+</style></head><body>
+<div class="wrap">
+<section class="card" aria-label="Weight of the shilling loaf">
+    <div class="controls">
+      <h3>What a shilling bought, 1745–1805</h3>
+      <div class="legend"><span><i class="key" style="border-color:var(--s1)"></i>Weight of the 1s loaf, lb</span></div>
+    </div>
+    <div class="plot" id="plotW"><div class="tip" id="tipW" hidden></div></div>
+    <div class="caption">Weight of bread sold for one shilling (12d). A heavier loaf means cheaper bread. Printed in pounds, ounces and drams; shown here in pounds.</div>
+    <details><summary>Show the figures</summary><div class="tbl" id="tblW"></div></details>
+  </section>
+<section class="card" aria-label="Price of the loaf">
+    <div class="controls">
+      <h3>What a loaf cost, 1806–1945</h3>
+      <div class="legend" id="legP"></div>
+    </div>
+    <div class="plot" id="plotP"><div class="tip" id="tipP" hidden></div></div>
+    <div class="caption">Price in pence (12d = 1s). Three measures, each drawn on its own: the quartern loaf to 1848, the 4 lb loaf by quality 1849–1877, and the 4 lb loaf of ordinary batch bread from 1878. 2nd quality is printed as "8d to 7d" for 1875–1877 and is left as a gap.</div>
+    <details><summary>Show the figures</summary><div class="tbl" id="tblP"></div></details>
+  </section>
+<section class="card" aria-label="Price per pound of bread">
+    <div class="controls">
+      <h3>One measure over two centuries: price per lb, 1745–1945</h3>
+      <div class="legend"><span><i class="key" style="border-color:var(--s1)"></i>Price per lb, pence (derived)</span></div>
+    </div>
+    <div class="plot" id="plotL"><div class="tip" id="tipL" hidden></div></div>
+    <div class="caption">Derived by CEPH: 12d ÷ weight of the shilling loaf (1745–1805); quartern loaf ÷ 4 (1806–1848); 4 lb loaf ÷ 4 (1849–1945; 1st quality to 1877). The breaks mark changes of measure.</div>
+    <details><summary>Show the figures</summary><div class="tbl" id="tblL"></div></details>
+  </section>
+<p id="cephCite" hidden style="font-size:13px;color:#5B6670;margin:12px 0 0">How to cite: Lyons, Ronan C. (2026), &quot;The price of bread in Dublin, 1745-1945&quot;, CEPH Historical Irish Data series, version of 9 November 2026, https://data.ronanlyons.com/charts/bread-prices-dublin.html. For the figures, please also cite: Swift, John (1948), History of the Dublin Bakers and Others, Dublin: Irish Bakers, Confectionery and Allied Workers Union, Appendix IX, pp. 370-372.</p>
+</div>
+<script>
+const DATA = {"weight": [[1745, 14.375], [1746, 14.207], [1747, 14.2539], [1748, 13.0625], [1749, 12.7656], [1750, 12.7539], [1751, 12.2578], [1752, 11.9375], [1753, 11.2148], [1754, 11.5703], [1755, 12.875], [1756, 10.875], [1757, 9.375], [1758, 11.2539], [1759, 13.8164], [1760, 12.8242], [1761, 12.5234], [1762, 11.0234], [1763, 10.5898], [1764, 10.8242], [1765, 9.5117], [1766, 8.6875], [1767, 7.9531], [1768, 9.5], [1769, 9.6875], [1770, 9.3281], [1771, 8.5156], [1772, 8.5703], [1773, 8.5117], [1774, 8.0], [1775, 8.8789], [1776, 11.0039], [1777, 9.5625], [1778, 9.1953], [1779, 11.0195], [1780, 11.1953], [1781, 9.1992], [1782, 8.457], [1783, 7.3828], [1784, 7.9609], [1785, 8.7734], [1786, 8.8906], [1787, 9.3164], [1788, 9.4375], [1789, 8.375], [1790, 7.707], [1791, 7.8203], [1792, 9.3203], [1793, 7.5], [1794, 7.0], [1795, 5.5117], [1796, 5.75], [1797, 5.8125], [1798, 5.75], [1799, 6.5], [1800, 2.875], [1801, 3.375], [1802, 6.5], [1803, 5.5], [1804, 6.8242], [1805, 4.332]], "price": {"q": [[1806, 11.25], [1807, 10.5], [1808, 13.5], [1809, 13.0], [1810, 14.0], [1811, 15.5], [1812, 18.75], [1813, 17.5], [1814, 11.25], [1815, 10.0], [1816, 15.5], [1817, 21.5], [1818, 13.5], [1819, 12.5], [1820, 10.0], [1821, 8.5], [1822, 8.0], [1823, 8.25], [1824, 10.25], [1825, 10.0], [1826, 9.25], [1827, 9.0], [1828, 8.0], [1829, 10.0], [1830, 9.5], [1831, 9.25], [1832, 8.25], [1833, 8.0], [1834, 7.5], [1835, 8.0], [1836, 7.5], [1837, 9.0], [1838, 9.5], [1839, 9.5], [1840, 8.5], [1841, 8.0], [1842, 7.5], [1843, 6.5], [1844, 7.0], [1845, 7.0], [1846, 7.5], [1847, 9.5], [1848, 8.0]], "f1": [[1849, 6.5], [1850, 6.0], [1851, 6.0], [1852, 6.0], [1853, 8.0], [1854, 10.0], [1855, 10.0], [1856, 9.5], [1857, 9.0], [1858, 7.0], [1859, 7.0], [1860, 8.0], [1861, 8.0], [1862, 9.0], [1863, 8.0], [1864, 7.0], [1865, 7.5], [1866, 7.0], [1867, 9.0], [1868, 8.0], [1869, 8.0], [1870, 8.0], [1871, 8.5], [1872, 9.0], [1873, 9.0], [1874, 10.0], [1875, 8.0], [1876, 8.0], [1877, 8.0]], "f2": [[1849, 5.5], [1850, 5.0], [1851, 5.5], [1852, 5.5], [1853, 7.0], [1854, 9.0], [1855, 9.0], [1856, 8.5], [1857, 8.0], [1858, 6.0], [1859, 6.0], [1860, 7.0], [1861, 7.0], [1862, 8.0], [1863, 7.0], [1864, 6.0], [1865, 6.5], [1866, 6.5], [1867, 8.0], [1868, 7.0], [1869, 7.0], [1870, 7.0], [1871, 7.5], [1872, 7.5], [1873, 8.5], [1874, 9.5], [1875, null], [1876, null], [1877, null]], "f3": [[1849, 5.0], [1850, 4.75], [1851, 5.0], [1852, 5.0], [1853, 6.5], [1854, 8.5], [1855, 8.5], [1856, 8.0], [1857, 7.5], [1858, 5.5], [1859, 5.5], [1860, 6.5], [1861, 6.5], [1862, 7.5], [1863, 6.5], [1864, 5.5], [1865, 6.0], [1866, 6.0], [1867, 7.5], [1868, 6.5], [1869, 6.5], [1870, 6.5], [1871, 7.0], [1872, 8.0], [1873, 8.0], [1874, 9.0], [1875, 7.0], [1876, 7.0], [1877, 7.0]], "b": [[1878, 7.5], [1879, 7.5], [1880, 7.5], [1881, 7.5], [1882, 7.5], [1883, 7.0], [1884, 6.5], [1885, 6.0], [1886, 6.5], [1887, 6.0], [1888, 6.5], [1889, 7.0], [1890, 6.5], [1891, 6.5], [1892, 6.0], [1893, 5.5], [1894, 5.0], [1895, 4.5], [1896, 5.0], [1897, 5.5], [1898, 6.5], [1899, 5.5], [1900, 5.5], [1901, 5.0], [1902, 5.5], [1903, 5.5], [1904, 5.5], [1905, 6.0], [1906, 5.5], [1907, 6.0], [1908, 6.5], [1909, 6.0], [1910, 6.5], [1911, 6.0], [1912, 6.5], [1913, 6.0], [1914, 6.5], [1915, 7.5], [1916, 9.5], [1917, 11.0], [1918, 9.0], [1919, 10.0], [1920, 13.5], [1921, 11.5], [1922, 11.0], [1923, 11.5], [1924, 11.5], [1925, 11.0], [1926, 11.0], [1927, 11.0], [1928, 10.5], [1929, 10.0], [1930, 10.5], [1931, 8.5], [1932, 8.5], [1933, 9.0], [1934, 9.0], [1935, 9.0], [1936, 9.5], [1937, 9.5], [1938, 10.0], [1939, 10.5], [1940, 11.5], [1941, 11.5], [1942, 12.0], [1943, 13.0], [1944, 13.5], [1945, 13.5]]}, "printed": {"Weight of the 1/- loaf|1745": "14 lbs. 6 ozs. 0 drs.", "Weight of the 1/- loaf|1746": "14 lbs. 3 ozs. 5 drs.", "Weight of the 1/- loaf|1747": "14 lbs. 4 ozs. 1 drs.", "Weight of the 1/- loaf|1748": "13 lbs. 1 ozs. 0 drs.", "Weight of the 1/- loaf|1749": "12 lbs. 12 ozs. 4 drs.", "Weight of the 1/- loaf|1750": "12 lbs. 12 ozs. 1 drs.", "Weight of the 1/- loaf|1751": "12 lbs. 4 ozs. 2 drs.", "Weight of the 1/- loaf|1752": "11 lbs. 15 ozs. 0 drs.", "Weight of the 1/- loaf|1753": "11 lbs. 3 ozs. 7 drs.", "Weight of the 1/- loaf|1754": "11 lbs. 9 ozs. 2 drs.", "Weight of the 1/- loaf|1755": "12 lbs. 14 ozs. 0 drs.", "Weight of the 1/- loaf|1756": "10 lbs. 14 ozs. 0 drs.", "Weight of the 1/- loaf|1757": "9 lbs. 6 ozs. 0 drs.", "Weight of the 1/- loaf|1758": "11 lbs. 4 ozs. 1 drs.", "Weight of the 1/- loaf|1759": "13 lbs. 13 ozs. 1 drs.", "Weight of the 1/- loaf|1760": "12 lbs. 13 ozs. 3 drs.", "Weight of the 1/- loaf|1761": "12 lbs. 8 ozs. 6 drs.", "Weight of the 1/- loaf|1762": "11 lbs. 0 ozs. 6 drs.", "Weight of the 1/- loaf|1763": "10 lbs. 9 ozs. 7 drs.", "Weight of the 1/- loaf|1764": "10 lbs. 13 ozs. 3 drs.", "Weight of the 1/- loaf|1765": "9 lbs. 8 ozs. 3 drs.", "Weight of the 1/- loaf|1766": "8 lbs. 11 ozs. 0 drs.", "Weight of the 1/- loaf|1767": "7 lbs. 15 ozs. 4 drs.", "Weight of the 1/- loaf|1768": "9 lbs. 8 ozs. 0 drs.", "Weight of the 1/- loaf|1769": "9 lbs. 11 ozs. 0 drs.", "Weight of the 1/- loaf|1770": "9 lbs. 5 ozs. 4 drs.", "Weight of the 1/- loaf|1771": "8 lbs. 8 ozs. 4 drs.", "Weight of the 1/- loaf|1772": "8 lbs. 9 ozs. 2 drs.", "Weight of the 1/- loaf|1773": "8 lbs. 8 ozs. 3 drs.", "Weight of the 1/- loaf|1774": "8 lbs. 0 ozs. 0 drs.", "Weight of the 1/- loaf|1775": "8 lbs. 14 ozs. 1 drs.", "Weight of the 1/- loaf|1776": "11 lbs. 0 ozs. 1 drs.", "Weight of the 1/- loaf|1777": "9 lbs. 9 ozs. 0 drs.", "Weight of the 1/- loaf|1778": "9 lbs. 3 ozs. 2 drs.", "Weight of the 1/- loaf|1779": "11 lbs. 0 ozs. 5 drs.", "Weight of the 1/- loaf|1780": "11 lbs. 3 ozs. 2 drs.", "Weight of the 1/- loaf|1781": "9 lbs. 3 ozs. 3 drs.", "Weight of the 1/- loaf|1782": "8 lbs. 7 ozs. 5 drs.", "Weight of the 1/- loaf|1783": "7 lbs. 6 ozs. 2 drs.", "Weight of the 1/- loaf|1784": "7 lbs. 15 ozs. 6 drs.", "Weight of the 1/- loaf|1785": "8 lbs. 12 ozs. 6 drs.", "Weight of the 1/- loaf|1786": "8 lbs. 14 ozs. 4 drs.", "Weight of the 1/- loaf|1787": "9 lbs. 5 ozs. 1 drs.", "Weight of the 1/- loaf|1788": "9 lbs. 7 ozs. 0 drs.", "Weight of the 1/- loaf|1789": "8 lbs. 6 ozs. 0 drs.", "Weight of the 1/- loaf|1790": "7 lbs. 11 ozs. 5 drs.", "Weight of the 1/- loaf|1791": "7 lbs. 13 ozs. 2 drs.", "Weight of the 1/- loaf|1792": "9 lbs. 5 ozs. 2 drs.", "Weight of the 1/- loaf|1793": "7 lbs. 8 ozs. 0 drs.", "Weight of the 1/- loaf|1794": "7 lbs. 0 ozs. 0 drs.", "Weight of the 1/- loaf|1795": "5 lbs. 8 ozs. 3 drs.", "Weight of the 1/- loaf|1796": "5 lbs. 12 ozs. 0 drs.", "Weight of the 1/- loaf|1797": "5 lbs. 13 ozs. 0 drs.", "Weight of the 1/- loaf|1798": "5 lbs. 12 ozs. 0 drs.", "Weight of the 1/- loaf|1799": "6 lbs. 8 ozs. 0 drs.", "Weight of the 1/- loaf|1800": "2 lbs. 14 ozs. 0 drs.", "Weight of the 1/- loaf|1801": "3 lbs. 6 ozs. 0 drs.", "Weight of the 1/- loaf|1802": "6 lbs. 8 ozs. 0 drs.", "Weight of the 1/- loaf|1803": "5 lbs. 8 ozs. 0 drs.", "Weight of the 1/- loaf|1804": "6 lbs. 13 ozs. 3 drs.", "Weight of the 1/- loaf|1805": "4 lbs. 5 ozs. 5 drs.", "Price of the quartern loaf|1806": "0 s. 11 1/4 d.", "Price of the quartern loaf|1807": "0 s. 10 1/2 d.", "Price of the quartern loaf|1808": "1 s. 1 1/2 d.", "Price of the quartern loaf|1809": "1 s. 1 d.", "Price of the quartern loaf|1810": "1 s. 2 d.", "Price of the quartern loaf|1811": "1 s. 3 1/2 d.", "Price of the quartern loaf|1812": "1 s. 6 3/4 d.", "Price of the quartern loaf|1813": "1 s. 5 1/2 d.", "Price of the quartern loaf|1814": "0 s. 11 1/4 d.", "Price of the quartern loaf|1815": "0 s. 10 d.", "Price of the quartern loaf|1816": "1 s. 3 1/2 d.", "Price of the quartern loaf|1817": "1 s. 9 1/2 d.", "Price of the quartern loaf|1818": "1 s. 1 1/2 d.", "Price of the quartern loaf|1819": "1 s. 0 1/2 d.", "Price of the quartern loaf|1820": "0 s. 10 d.", "Price of the quartern loaf|1821": "0 s. 8 1/2 d.", "Price of the quartern loaf|1822": "0 s. 8 d.", "Price of the quartern loaf|1823": "0 s. 8 1/4 d.", "Price of the quartern loaf|1824": "0 s. 10 1/4 d.", "Price of the quartern loaf|1825": "0 s. 10 d.", "Price of the quartern loaf|1826": "0 s. 9 1/4 d.", "Price of the quartern loaf|1827": "0 s. 9 d.", "Price of the quartern loaf|1828": "0 s. 8 d.", "Price of the quartern loaf|1829": "0 s. 10 d.", "Price of the quartern loaf|1830": "0 s. 9 1/2 d.", "Price of the quartern loaf|1831": "0 s. 9 1/4 d.", "Price of the quartern loaf|1832": "0 s. 8 1/4 d.", "Price of the quartern loaf|1833": "0 s. 8 d.", "Price of the quartern loaf|1834": "0 s. 7 1/2 d.", "Price of the quartern loaf|1835": "0 s. 8 d.", "Price of the quartern loaf|1836": "0 s. 7 1/2 d.", "Price of the quartern loaf|1837": "0 s. 9 d.", "Price of the quartern loaf|1838": "0 s. 9 1/2 d.", "Price of the quartern loaf|1839": "0 s. 9 1/2 d.", "Price of the quartern loaf|1840": "0 s. 8 1/2 d.", "Price of the quartern loaf|1841": "0 s. 8 d.", "Price of the quartern loaf|1842": "0 s. 7 1/2 d.", "Price of the quartern loaf|1843": "0 s. 6 1/2 d.", "Price of the quartern loaf|1844": "0 s. 7 d.", "Price of the quartern loaf|1845": "0 s. 7 d.", "Price of the quartern loaf|1846": "0 s. 7 1/2 d.", "Price of the quartern loaf|1847": "0 s. 9 1/2 d.", "Price of the quartern loaf|1848": "0 s. 8 d.", "Price of the 4 lb loaf, 1st quality|1849": "6 1/2d.", "Price of the 4 lb loaf, 2nd quality|1849": "5 1/2d.", "Price of the 4 lb loaf, inferior quality|1849": "5d.", "Price of the 4 lb loaf, 1st quality|1850": "6d.", "Price of the 4 lb loaf, 2nd quality|1850": "5d.", "Price of the 4 lb loaf, inferior quality|1850": "4 3/4d.", "Price of the 4 lb loaf, 1st quality|1851": "6d.", "Price of the 4 lb loaf, 2nd quality|1851": "5 1/2d.", "Price of the 4 lb loaf, inferior quality|1851": "5d.", "Price of the 4 lb loaf, 1st quality|1852": "6d.", "Price of the 4 lb loaf, 2nd quality|1852": "5 1/2d.", "Price of the 4 lb loaf, inferior quality|1852": "5d.", "Price of the 4 lb loaf, 1st quality|1853": "8d.", "Price of the 4 lb loaf, 2nd quality|1853": "7d.", "Price of the 4 lb loaf, inferior quality|1853": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1854": "10d.", "Price of the 4 lb loaf, 2nd quality|1854": "9d.", "Price of the 4 lb loaf, inferior quality|1854": "8 1/2d.", "Price of the 4 lb loaf, 1st quality|1855": "10d.", "Price of the 4 lb loaf, 2nd quality|1855": "9d.", "Price of the 4 lb loaf, inferior quality|1855": "8 1/2d.", "Price of the 4 lb loaf, 1st quality|1856": "9 1/2d.", "Price of the 4 lb loaf, 2nd quality|1856": "8 1/2d.", "Price of the 4 lb loaf, inferior quality|1856": "8d.", "Price of the 4 lb loaf, 1st quality|1857": "9d.", "Price of the 4 lb loaf, 2nd quality|1857": "8d.", "Price of the 4 lb loaf, inferior quality|1857": "7 1/2d.", "Price of the 4 lb loaf, 1st quality|1858": "7d.", "Price of the 4 lb loaf, 2nd quality|1858": "6d.", "Price of the 4 lb loaf, inferior quality|1858": "5 1/2d.", "Price of the 4 lb loaf, 1st quality|1859": "7d.", "Price of the 4 lb loaf, 2nd quality|1859": "6d.", "Price of the 4 lb loaf, inferior quality|1859": "5 1/2d.", "Price of the 4 lb loaf, 1st quality|1860": "8d.", "Price of the 4 lb loaf, 2nd quality|1860": "7d.", "Price of the 4 lb loaf, inferior quality|1860": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1861": "8d.", "Price of the 4 lb loaf, 2nd quality|1861": "7d.", "Price of the 4 lb loaf, inferior quality|1861": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1862": "9d.", "Price of the 4 lb loaf, 2nd quality|1862": "8d.", "Price of the 4 lb loaf, inferior quality|1862": "7 1/2d.", "Price of the 4 lb loaf, 1st quality|1863": "8d.", "Price of the 4 lb loaf, 2nd quality|1863": "7d.", "Price of the 4 lb loaf, inferior quality|1863": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1864": "7d.", "Price of the 4 lb loaf, 2nd quality|1864": "6d.", "Price of the 4 lb loaf, inferior quality|1864": "5 1/2d.", "Price of the 4 lb loaf, 1st quality|1865": "7 1/2d.", "Price of the 4 lb loaf, 2nd quality|1865": "6 1/2d.", "Price of the 4 lb loaf, inferior quality|1865": "6d.", "Price of the 4 lb loaf, 1st quality|1866": "7d.", "Price of the 4 lb loaf, 2nd quality|1866": "6 1/2d.", "Price of the 4 lb loaf, inferior quality|1866": "6d.", "Price of the 4 lb loaf, 1st quality|1867": "9d.", "Price of the 4 lb loaf, 2nd quality|1867": "8d.", "Price of the 4 lb loaf, inferior quality|1867": "7 1/2d.", "Price of the 4 lb loaf, 1st quality|1868": "8d.", "Price of the 4 lb loaf, 2nd quality|1868": "7d.", "Price of the 4 lb loaf, inferior quality|1868": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1869": "8d.", "Price of the 4 lb loaf, 2nd quality|1869": "7d.", "Price of the 4 lb loaf, inferior quality|1869": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1870": "8d.", "Price of the 4 lb loaf, 2nd quality|1870": "7d.", "Price of the 4 lb loaf, inferior quality|1870": "6 1/2d.", "Price of the 4 lb loaf, 1st quality|1871": "8 1/2d.", "Price of the 4 lb loaf, 2nd quality|1871": "7 1/2d.", "Price of the 4 lb loaf, inferior quality|1871": "7d.", "Price of the 4 lb loaf, 1st quality|1872": "9d.", "Price of the 4 lb loaf, 2nd quality|1872": "7 1/2d.", "Price of the 4 lb loaf, inferior quality|1872": "8d.", "Price of the 4 lb loaf, 1st quality|1873": "9d.", "Price of the 4 lb loaf, 2nd quality|1873": "8 1/2d.", "Price of the 4 lb loaf, inferior quality|1873": "8d.", "Price of the 4 lb loaf, 1st quality|1874": "10d.", "Price of the 4 lb loaf, 2nd quality|1874": "9 1/2d.", "Price of the 4 lb loaf, inferior quality|1874": "9d.", "Price of the 4 lb loaf, 1st quality|1875": "8d.", "Price of the 4 lb loaf, 2nd quality|1875": "8d. to 7d.", "Price of the 4 lb loaf, inferior quality|1875": "7d.", "Price of the 4 lb loaf, 1st quality|1876": "8d.", "Price of the 4 lb loaf, 2nd quality|1876": "8d. to 7d.", "Price of the 4 lb loaf, inferior quality|1876": "7d.", "Price of the 4 lb loaf, 1st quality|1877": "8d.", "Price of the 4 lb loaf, 2nd quality|1877": "8d. to 7d.", "Price of the 4 lb loaf, inferior quality|1877": "7d.", "Price of the 4 lb loaf|1878": "7 1/2d.", "Price of the 4 lb loaf|1879": "7 1/2d.", "Price of the 4 lb loaf|1880": "7 1/2d.", "Price of the 4 lb loaf|1881": "7 1/2d.", "Price of the 4 lb loaf|1882": "7 1/2d.", "Price of the 4 lb loaf|1883": "7d.", "Price of the 4 lb loaf|1884": "6 1/2d.", "Price of the 4 lb loaf|1885": "6d.", "Price of the 4 lb loaf|1886": "6 1/2d.", "Price of the 4 lb loaf|1887": "6d.", "Price of the 4 lb loaf|1888": "6 1/2d.", "Price of the 4 lb loaf|1889": "7d.", "Price of the 4 lb loaf|1890": "6 1/2d.", "Price of the 4 lb loaf|1891": "6 1/2d.", "Price of the 4 lb loaf|1892": "6d.", "Price of the 4 lb loaf|1893": "5 1/2d.", "Price of the 4 lb loaf|1894": "5d.", "Price of the 4 lb loaf|1895": "4 1/2d.", "Price of the 4 lb loaf|1896": "5d.", "Price of the 4 lb loaf|1897": "5 1/2d.", "Price of the 4 lb loaf|1898": "6 1/2d.", "Price of the 4 lb loaf|1899": "5 1/2d.", "Price of the 4 lb loaf|1900": "5 1/2d.", "Price of the 4 lb loaf|1901": "5d.", "Price of the 4 lb loaf|1902": "5 1/2d.", "Price of the 4 lb loaf|1903": "5 1/2d.", "Price of the 4 lb loaf|1904": "5 1/2d.", "Price of the 4 lb loaf|1905": "6d.", "Price of the 4 lb loaf|1906": "5 1/2d.", "Price of the 4 lb loaf|1907": "6d.", "Price of the 4 lb loaf|1908": "6 1/2d.", "Price of the 4 lb loaf|1909": "6d.", "Price of the 4 lb loaf|1910": "6 1/2d.", "Price of the 4 lb loaf|1911": "6d.", "Price of the 4 lb loaf|1912": "6 1/2d.", "Price of the 4 lb loaf|1913": "6d.", "Price of the 4 lb loaf|1914": "6 1/2d.", "Price of the 4 lb loaf|1915": "7 1/2d.", "Price of the 4 lb loaf|1916": "9 1/2d.", "Price of the 4 lb loaf|1917": "11d.", "Price of the 4 lb loaf|1918": "9d.", "Price of the 4 lb loaf|1919": "10d.", "Price of the 4 lb loaf|1920": "1/1 1/2d.", "Price of the 4 lb loaf|1921": "11 1/2d.", "Price of the 4 lb loaf|1922": "11d.", "Price of the 4 lb loaf|1923": "11 1/2d.", "Price of the 4 lb loaf|1924": "11 1/2d.", "Price of the 4 lb loaf|1925": "11d.", "Price of the 4 lb loaf|1926": "11d.", "Price of the 4 lb loaf|1927": "11d.", "Price of the 4 lb loaf|1928": "10 1/2d.", "Price of the 4 lb loaf|1929": "10d.", "Price of the 4 lb loaf|1930": "10 1/2d.", "Price of the 4 lb loaf|1931": "8 1/2d.", "Price of the 4 lb loaf|1932": "8 1/2d.", "Price of the 4 lb loaf|1933": "9d.", "Price of the 4 lb loaf|1934": "9d.", "Price of the 4 lb loaf|1935": "9d.", "Price of the 4 lb loaf|1936": "9 1/2d.", "Price of the 4 lb loaf|1937": "9 1/2d.", "Price of the 4 lb loaf|1938": "10d.", "Price of the 4 lb loaf|1939": "10 1/2d.", "Price of the 4 lb loaf|1940": "11 1/2d.", "Price of the 4 lb loaf|1941": "11 1/2d.", "Price of the 4 lb loaf|1942": "1/-", "Price of the 4 lb loaf|1943": "1/1", "Price of the 4 lb loaf|1944": "1/1 1/2", "Price of the 4 lb loaf|1945": "1/1 1/2"}, "perlb": [[1745, 0.8348], [1746, 0.8447], [1747, 0.8419], [1748, 0.9187], [1749, 0.94], [1750, 0.9409], [1751, 0.979], [1752, 1.0052], [1753, 1.07], [1754, 1.0371], [1755, 0.932], [1756, 1.1034], [1757, 1.28], [1758, 1.0663], [1759, 0.8685], [1760, 0.9357], [1761, 0.9582], [1762, 1.0886], [1763, 1.1332], [1764, 1.1086], [1765, 1.2616], [1766, 1.3813], [1767, 1.5088], [1768, 1.2632], [1769, 1.2387], [1770, 1.2864], [1771, 1.4092], [1772, 1.4002], [1773, 1.4098], [1774, 1.5], [1775, 1.3515], [1776, 1.0905], [1777, 1.2549], [1778, 1.305], [1779, 1.089], [1780, 1.0719], [1781, 1.3045], [1782, 1.4189], [1783, 1.6254], [1784, 1.5074], [1785, 1.3678], [1786, 1.3497], [1787, 1.2881], [1788, 1.2715], [1789, 1.4328], [1790, 1.557], [1791, 1.5345], [1792, 1.2875], [1793, 1.6], [1794, 1.7143], [1795, 2.1772], [1796, 2.087], [1797, 2.0645], [1798, 2.087], [1799, 1.8462], [1800, 4.1739], [1801, 3.5556], [1802, 1.8462], [1803, 2.1818], [1804, 1.7584], [1805, 2.7701], [1806, 2.8125], [1807, 2.625], [1808, 3.375], [1809, 3.25], [1810, 3.5], [1811, 3.875], [1812, 4.6875], [1813, 4.375], [1814, 2.8125], [1815, 2.5], [1816, 3.875], [1817, 5.375], [1818, 3.375], [1819, 3.125], [1820, 2.5], [1821, 2.125], [1822, 2.0], [1823, 2.0625], [1824, 2.5625], [1825, 2.5], [1826, 2.3125], [1827, 2.25], [1828, 2.0], [1829, 2.5], [1830, 2.375], [1831, 2.3125], [1832, 2.0625], [1833, 2.0], [1834, 1.875], [1835, 2.0], [1836, 1.875], [1837, 2.25], [1838, 2.375], [1839, 2.375], [1840, 2.125], [1841, 2.0], [1842, 1.875], [1843, 1.625], [1844, 1.75], [1845, 1.75], [1846, 1.875], [1847, 2.375], [1848, 2.0], [1849, 1.625], [1850, 1.5], [1851, 1.5], [1852, 1.5], [1853, 2.0], [1854, 2.5], [1855, 2.5], [1856, 2.375], [1857, 2.25], [1858, 1.75], [1859, 1.75], [1860, 2.0], [1861, 2.0], [1862, 2.25], [1863, 2.0], [1864, 1.75], [1865, 1.875], [1866, 1.75], [1867, 2.25], [1868, 2.0], [1869, 2.0], [1870, 2.0], [1871, 2.125], [1872, 2.25], [1873, 2.25], [1874, 2.5], [1875, 2.0], [1876, 2.0], [1877, 2.0], [1878, 1.875], [1879, 1.875], [1880, 1.875], [1881, 1.875], [1882, 1.875], [1883, 1.75], [1884, 1.625], [1885, 1.5], [1886, 1.625], [1887, 1.5], [1888, 1.625], [1889, 1.75], [1890, 1.625], [1891, 1.625], [1892, 1.5], [1893, 1.375], [1894, 1.25], [1895, 1.125], [1896, 1.25], [1897, 1.375], [1898, 1.625], [1899, 1.375], [1900, 1.375], [1901, 1.25], [1902, 1.375], [1903, 1.375], [1904, 1.375], [1905, 1.5], [1906, 1.375], [1907, 1.5], [1908, 1.625], [1909, 1.5], [1910, 1.625], [1911, 1.5], [1912, 1.625], [1913, 1.5], [1914, 1.625], [1915, 1.875], [1916, 2.375], [1917, 2.75], [1918, 2.25], [1919, 2.5], [1920, 3.375], [1921, 2.875], [1922, 2.75], [1923, 2.875], [1924, 2.875], [1925, 2.75], [1926, 2.75], [1927, 2.75], [1928, 2.625], [1929, 2.5], [1930, 2.625], [1931, 2.125], [1932, 2.125], [1933, 2.25], [1934, 2.25], [1935, 2.25], [1936, 2.375], [1937, 2.375], [1938, 2.5], [1939, 2.625], [1940, 2.875], [1941, 2.875], [1942, 3.0], [1943, 3.25], [1944, 3.375], [1945, 3.375]]};
+const W=880,H=320,M={l:56,r:30,t:20,b:34};
+const NS="http://www.w3.org/2000/svg", F="IBM Plex Sans Condensed, Arial Narrow, sans-serif";
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+function div(c,t){const d=document.createElement("div");if(c)d.className=c;if(t!=null)d.textContent=t;return d}
+const pd=v=>{if(v==null)return"..";const s=Math.floor(v/12),d=v-12*s;const fr=x=>{const w=Math.floor(x),f=x-w;return (w||(!f?"0":""))+(f===0.25?"¼":f===0.5?"½":f===0.75?"¾":"")};return s?`${s}s ${fr(d)}d`:`${fr(d)}d`;};
+function table(id,head,body){const t=document.createElement("table");const tr=document.createElement("tr");head.forEach(h=>{const th=document.createElement("th");th.textContent=h;tr.appendChild(th)});t.appendChild(tr);
+  body.forEach(r=>{const tr=document.createElement("tr");r.forEach(c=>{const td=document.createElement("td");td.textContent=c;tr.appendChild(td)});t.appendChild(tr)});document.getElementById(id).appendChild(t);}
+
+// Generic year line chart: series = [{label,color,pts:[[yr,v]],dash,width}], breaks = [year+0.5 ...]
+function lineChart(plotId,tipId,cfg){
+  const plot=document.getElementById(plotId), tip=document.getElementById(tipId);
+  const {X0,X1,ymax,ticks,fmtY,series,breaks,tipRows}=cfg;
+  const x=v=>M.l+(v-X0)/(X1-X0)*(W-M.l-M.r), y=v=>H-M.b-(v/ymax)*(H-M.t-M.b);
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,role:"img","aria-label":cfg.aria});
+  plot.insertBefore(svg,tip);
+  ticks.forEach((v,i)=>{const yy=y(v);el("line",{x1:M.l,x2:W-M.r,y1:yy,y2:yy,stroke:i?"var(--grid)":"var(--rule)","stroke-width":1},svg);
+    el("text",{x:M.l-8,y:yy+4,"text-anchor":"end","font-family":F,"font-size":12,fill:"var(--muted)"},svg).textContent=fmtY(v);});
+  for(let yr=Math.ceil(X0/cfg.step)*cfg.step;yr<=X1;yr+=cfg.step)el("text",{x:x(yr),y:H-M.b+18,"text-anchor":"middle","font-family":F,"font-size":12,fill:"var(--muted)"},svg).textContent=yr;
+  (breaks||[]).forEach(b=>{el("line",{x1:x(b.at),x2:x(b.at),y1:M.t,y2:H-M.b,stroke:"var(--seam)","stroke-width":1,"stroke-dasharray":"3 3",opacity:.6},svg);
+    el("text",{x:x(b.at)+4,y:M.t+10,"font-family":F,"font-size":11,fill:"var(--muted)"},svg).textContent=b.label;});
+  for(const s of series){let d="",prev=null;
+    for(const [yr,v] of s.pts){if(v==null){prev=null;continue;}d+=(prev!=null&&yr-prev===1?"L":"M")+x(yr).toFixed(1)+","+y(v).toFixed(1);prev=yr;}
+    el("path",{d,fill:"none",stroke:s.color,"stroke-width":s.width||2,"stroke-linejoin":"round","stroke-dasharray":s.dash||"",opacity:s.op||1},svg);}
+  const hair=el("line",{y1:M.t,y2:H-M.b,stroke:"var(--muted)","stroke-width":1,visibility:"hidden"},svg);
+  const hit=el("rect",{x:M.l,y:M.t,width:W-M.l-M.r,height:H-M.t-M.b,fill:"transparent",tabindex:0,"aria-label":"Move across the chart to read values"},svg);
+  function show(yr){yr=Math.max(X0,Math.min(X1,yr));const px=x(yr);hair.setAttribute("x1",px);hair.setAttribute("x2",px);hair.setAttribute("visibility","visible");
+    tip.replaceChildren(div("yr",yr));tipRows(yr).forEach(([lab,col,val,note])=>{const r=div("row");const sp=document.createElement("span");const k=document.createElement("i");k.className="key";k.style.borderColor=col;sp.append(k,lab);
+      const b=document.createElement("b");b.textContent=val;r.append(sp,b);tip.appendChild(r);if(note)tip.appendChild(div("note",note));});
+    tip.hidden=false;const box=svg.getBoundingClientRect(),left=px*box.width/W+plot.scrollLeft;tip.style.top="8px";tip.style.left=(left+200>box.width?left-200:left+12)+"px";}
+  hit.addEventListener("pointermove",e=>{const b=svg.getBoundingClientRect();const vx=(e.clientX-b.left)*W/b.width;show(Math.round(X0+(vx-M.l)/(W-M.l-M.r)*(X1-X0)));});
+  hit.addEventListener("pointerleave",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+  let k=X0;hit.addEventListener("keydown",e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){k=Math.max(X0,Math.min(X1,k+(e.key==="ArrowRight"?1:-1)));show(k);e.preventDefault();}});
+  hit.addEventListener("focus",()=>show(k));hit.addEventListener("blur",()=>{tip.hidden=true;hair.setAttribute("visibility","hidden");});
+}
+
+// Card 1: weight of the shilling loaf
+(function(){
+  const pts=DATA.weight, mp=new Map(pts);
+  lineChart("plotW","tipW",{X0:1745,X1:1805,step:10,ymax:16,ticks:[0,4,8,12,16],fmtY:v=>v+" lb",aria:"Weight of the shilling loaf in Dublin, 1745 to 1805",
+    series:[{color:"var(--s1)",pts}],
+    tipRows:yr=>[["Weight","var(--s1)",mp.get(yr).toFixed(2)+" lb","printed "+DATA.printed["Weight of the 1/- loaf|"+yr]]]});
+  table("tblW",["Year","As printed","lb"],pts.map(([y,v])=>[y,DATA.printed["Weight of the 1/- loaf|"+y],v.toFixed(2)]));
+})();
+
+// Card 2: price of the loaf, three measures not joined
+(function(){
+  const P=DATA.price;
+  const S=[
+    {k:"q",label:"Quartern loaf",color:"var(--s1)",m:"Price of the quartern loaf"},
+    {k:"f1",label:"4 lb, 1st quality",color:"var(--s2)",m:"Price of the 4 lb loaf, 1st quality"},
+    {k:"f2",label:"4 lb, 2nd quality",color:"var(--s2)",m:"Price of the 4 lb loaf, 2nd quality",dash:"5 3",width:1.5},
+    {k:"f3",label:"4 lb, inferior",color:"var(--s2)",m:"Price of the 4 lb loaf, inferior quality",dash:"1.5 3",width:1.5},
+    {k:"b",label:"4 lb loaf",color:"var(--s3)",m:"Price of the 4 lb loaf"}];
+  const lk=S.map(s=>new Map(P[s.k]));
+  lineChart("plotP","tipP",{X0:1806,X1:1945,step:20,ymax:24,ticks:[0,6,12,18,24],fmtY:v=>pd(v),aria:"Price of bread in Dublin in pence, 1806 to 1945",
+    series:S.map(s=>({color:s.color,pts:P[s.k],dash:s.dash,width:s.width})),
+    breaks:[{at:1848.5,label:"4 lb loaf from 1849"},{at:1877.5,label:"one price from 1878"}],
+    tipRows:yr=>S.map((s,i)=>lk[i].has(yr)?[s.label,s.color,lk[i].get(yr)==null?"range":pd(lk[i].get(yr)),"printed "+DATA.printed[s.m+"|"+yr]]:null).filter(Boolean)});
+  const lg=document.getElementById("legP");
+  S.forEach(s=>{const sp=document.createElement("span");const k=document.createElement("i");k.className="key";k.style.borderColor=s.color;if(s.dash)k.style.borderTopStyle=s.k==="f2"?"dashed":"dotted";sp.append(k,s.label);lg.appendChild(sp);});
+  const rows=[];for(let y=1806;y<=1945;y++){const r=S.map((s,i)=>lk[i].has(y)?DATA.printed[s.m+"|"+y]:"");rows.push([y,...r]);}
+  table("tblP",["Year",...S.map(s=>s.label)],rows);
+})();
+
+// Card 3: price per lb, derived, one consistent measure (RL rulings sc-15-join, sc-15-perlb, 9 Nov 2026)
+(function(){
+  const pts=DATA.perlb, mp=new Map(pts);
+  const how=yr=>yr<=1805?"12d ÷ weight of the 1s loaf":yr<=1848?"quartern loaf ÷ 4":yr<=1877?"4 lb loaf, 1st quality ÷ 4":"4 lb loaf ÷ 4";
+  lineChart("plotL","tipL",{X0:1745,X1:1945,step:20,ymax:6,ticks:[0,1,2,3,4,5,6],fmtY:v=>v+"d",aria:"Price of bread per pound in Dublin, derived, 1745 to 1945",
+    series:[{color:"var(--s1)",pts}],
+    breaks:[{at:1805.5,label:"quartern loaf from 1806"},{at:1848.5,label:"4 lb loaf from 1849"},{at:1877.5,label:"one price from 1878"}],
+    tipRows:yr=>[["Price per lb","var(--s1)",mp.get(yr).toFixed(2)+"d",how(yr)]]});
+  table("tblL",["Year","Price per lb (d)","Derived from"],pts.map(([y,v])=>[y,v.toFixed(2),how(y)]));
+})();
+</script>
+<script>if(window.top===window.self)document.getElementById("cephCite").hidden=false;</script>
+<script>(function(){function h(){var w=document.querySelector('.wrap');parent.postMessage({cephEmbed:'bread-prices-dublin',height:Math.ceil((w?w.getBoundingClientRect().bottom+window.scrollY:document.body.scrollHeight)+8)},'*');}addEventListener('load',h);if(window.ResizeObserver)new ResizeObserver(h).observe(document.body);document.addEventListener('toggle',h,true);})();</script>
+</body></html>
